@@ -1,15 +1,5 @@
-$color: hsl(256, 67%, 44%);
-
-*,
-*::after,
-*::before {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-	font-family: 'Nunito', sans-serif;
-}
-
-body {
-	background: $color;
-	// background: green;
-}
+@use './abstract/index' as *;
+@use './base/index' as *;
+@use './components/index' as *;
+@use './layout/index' as *;
+@use './utilities/index' as *;

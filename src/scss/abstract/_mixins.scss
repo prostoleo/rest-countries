@@ -1,0 +1,91 @@
+@use './breakpoints' as *;
+
+$max-width: 1200;
+$min-width: 320;
+
+$breakpoints: (
+	med: 600px,
+	lg: 900px,
+	xlg: 1200px,
+	xxlg: 1800px,
+);
+@mixin mq($key) {
+	$size: map-get($breakpoints, $key);
+
+	@media only screen and (min-width: $size) {
+		@content;
+	}
+}
+
+$med: 600px;
+$lg: 900px;
+$xlg: 1200px;
+
+@mixin mqMy($size) {
+	@media (min-width: $size) {
+		@content;
+	}
+}
+
+//! работает
+@mixin for-size($size) {
+	@if $size == phone-only {
+		@media (max-width: 599px) {
+			@content;
+		}
+	} @else if $size == tablet-portrait-up {
+		@media (min-width: 600px) {
+			@content;
+		}
+	} @else if $size == tablet-landscape-up {
+		@media (min-width: 900px) {
+			@content;
+		}
+	} @else if $size == desktop-up {
+		@media (min-width: 1200px) {
+			@content;
+		}
+	} @else if $size == big-desktop-up {
+		@media (min-width: 1800px) {
+			@content;
+		}
+	}
+}
+
+/* .card__title {
+  @include for-size(big-desktop-up)
+} */
+
+//! работает - передаем свойство - минимальное
+@mixin adaptive-value($property, $pcSize, $mobSize) {
+	$addSize: $pcSize - $mobSize;
+	$maxWidth: $max-width - 320;
+
+	#{$property}: calc(
+		#{$mobSize}px + #{$addSize} * ((100vw - 320px) / #{($maxWidth)})
+	);
+}
+
+@mixin adaptive-value-min-max($property, $pcSize, $mobSize) {
+	$addSize: $pcSize - $mobSize;
+	$maxWidth: $max-width - 320;
+
+	@media (min-width: #{$max-width}px) {
+		#{$property}: #{$pcSize}px;
+	}
+
+	@media (max-width: #{$min-width}px) {
+		#{$property}: #{$mobSize}px;
+	}
+
+	#{$property}: calc(
+		#{$mobSize}px + #{$addSize} * ((100vw - 320px) / #{($maxWidth)})
+	);
+}
+
+@function AdaptiveValue($pcSize, $mobSize) {
+	$addSize: $pcSize - $mobSize;
+	$maxWidth: $max-width - 320;
+
+	@return calc(#{$mobSize}px + #{$addSize}px * ((100vw - 320px) / $maxWidth));
+}

@@ -11,9 +11,7 @@
 		"watch": "cross-env NODE_ENV=development webpack --mode development --watch"
 	},
 	"browserslist": [
-		"> 0.25%",
-		"not dead",
-		"IE11"
+		"> 0.25%"
 	],
 	"keywords": [],
 	"author": "",
@@ -41,7 +39,6 @@
 	},
 	"dependencies": {
 		"@babel/polyfill": "^7.12.1",
-		"@fortawesome/fontawesome-free": "^5.15.3",
 		"core-js": "^3.15.2",
 		"path": "^0.12.7",
 		"regenerator-runtime": "^0.13.7"

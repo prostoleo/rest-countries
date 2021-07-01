@@ -189,12 +189,19 @@ module.exports = {
 		//* cleanWebpackPlugin - очищает папку dist
 		new CleanWebpackPlugin(),
 		//* copyWebpackPlugin - откуда и куда копировать
-		/* new CopyWebpackPlugin([
-      {
-        from: path.resolve(__dirname, './src/favicon.ico'),
-        to: path.resolve(__dirname, 'dist'),
-      },
-    ]), */
+		new CopyWebpackPlugin({
+			patterns: [
+				{
+					from: path.resolve(__dirname, '/img').replace(/\\/g, '/'),
+					to: path.resolve(__dirname, '../dist/img').replace(/\\/g, '/'),
+				},
+			],
+		}),
+		/* {
+				from: path.resolve(__dirname, './src/img'),
+				to: path.resolve(__dirname, 'dist/img'),
+			},
+		]), */
 		/* new CopyWebpackPlugin({
 			patterns: [
 				// {
