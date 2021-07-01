@@ -25,7 +25,16 @@ const TerserWebpackPlugin = require('terser-webpack-plugin');
 
 //=========================================
 //todo анализ финального bundle - можно подключить потом через функцию - все начальные плагины в функцию, а если флаг isProd - то подключаем еще его
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+
+let htmlPageNames = ['country'];
+let multipleHtmlPlugins = htmlPageNames.map((name) => {
+	return new HtmlWebpackPlugin({
+		template: `./${name}.html`, // relative path to the HTML files
+		filename: `${name}.html`, // output HTML files
+		chunks: [`${name}`], // respective JS files
+	});
+});
 
 //=========================================
 //* переменная isDev чтобы определять - находимся ли мы в режиме разработки или build
@@ -122,7 +131,7 @@ module.exports = {
 	//todo входная точка проекта
 	entry: {
 		main: ['@babel/polyfill', './index.js'],
-		analytics: './analytics.js',
+		// country: './country.js',
 	},
 	//todo куда выводить
 	output: {
@@ -149,7 +158,7 @@ module.exports = {
 	devServer: {
 		contentBase: './dist',
 		hot: isDev ? true : false,
-		port: 2424,
+		// port: 2424,
 		liveReload: true,
 	},
 
@@ -160,11 +169,23 @@ module.exports = {
 		//* htmlWebpack Plugin
 		new HtmlWebpackPlugin({
 			//? путь до template
+			filename: 'index.html',
 			template: './index.html',
+			chunks: ['main'],
 			minify: {
 				collapseWhitespace: isProd,
 			},
 		}),
+		/* //* htmlWebpack Plugin
+		new HtmlWebpackPlugin({
+			//? путь до template
+			filename: 'country.html',
+			template: './country.html',
+			// chunks: ['country'],
+			minify: {
+				collapseWhitespace: isProd,
+			},
+		}), */
 		//* cleanWebpackPlugin - очищает папку dist
 		new CleanWebpackPlugin(),
 		//* copyWebpackPlugin - откуда и куда копировать
@@ -174,33 +195,78 @@ module.exports = {
         to: path.resolve(__dirname, 'dist'),
       },
     ]), */
-		new CopyWebpackPlugin({
+		/* new CopyWebpackPlugin({
 			patterns: [
+				// {
+				//   from: path.resolve(__dirname, './src/favicon.ico'),
+				//   to: path.resolve(__dirname, 'dist'),
+				// },
 				//* если путь не указан, то по дефолту - в папку dist
 				{
 					from: './favicon.ico',
 					to: '',
 				},
 			],
-		}),
+		}), */
 		//todo для создания отдельного css файла
 		new MiniCssExtractPlugin({
+			// filename: '[name].[contenthash].css',
 			filename: filename('css'),
 		}),
 
-		new BundleAnalyzerPlugin(),
-	],
+		// new BundleAnalyzerPlugin(),
+		//* добавляем множество страниц html к одному
+	].concat(multipleHtmlPlugins),
 	//* лоадеры - возможность дополнения к webpack функционала, позволяющую ему работать с другими типами файлов (css, jpg, png, xml и т.д.)
 	module: {
 		rules: [
 			{
+				/* //? регулярное выражение чтобы найти нужные файлы - как только встречается файл указанного типа, нужно использовать указанный loader
+        test: /\.css$/,
+        //! loader читаются справа налево
+        // use: ['style-loader', 'css-loader'],
+        //* чтобы выводилось отдельно в css файл
+        // use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        //* с доп опциями
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {},
+          },
+          'css-loader',
+        ], */
+
 				//* с использовани функции
 				test: /\.css$/,
 				use: cssLoaders(),
 			},
+			//todo для препроцессора less
+			{
+				test: /\.less$/,
+				//* с доп опциями
+				/* use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {},
+          },
+          'css-loader',
+          'less-loader',
+        ], */
+				//* через функцию css loaders
+				use: cssLoaders('less-loader'),
+			},
 			//todo для препроцессора scss
 			{
 				test: /\.s[ac]ss$/,
+				//* с доп опциями
+				/* use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {},
+          },
+          'css-loader',
+          'sass-loader',
+        ], */
 				//* через функцию css loaders
 				use: cssLoaders('sass-loader'),
 			},
@@ -214,19 +280,68 @@ module.exports = {
 				test: /\.(ttf|woff|woff2|eot)$/,
 				use: ['file-loader'],
 			},
-
+			//todo для работы с xml
+			{
+				test: /\.xml$/,
+				use: ['xml-loader'],
+			},
+			//todo для работы с csv (может еще потребоваться пакет papaparse)
+			{
+				test: /\.csv$/,
+				use: ['csv-loader'],
+			},
 			//todo babel js
 			{
 				test: /\.js$/,
 				exclude: /node_modules/,
 				use: {
 					//* в начале
-					// loader: 'babel-loader',
+					loader: 'babel-loader',
 					//* через функцию
-					loader: jsLoaders(),
+					// loader: jsLoaders(),
+					//* в начале
+					/* options: {
+            presets: ['@babel/preset-env'],
+            plugins: ['@babel/plugin-proposal-private-methods'],
+          }, */
 					//* через функцию
 					options: babelOptions(),
 				},
+			},
+			//todo babel для typeScript
+			{
+				test: /\.ts$/,
+				exclude: /node_modules/,
+				use: {
+					loader: 'babel-loader',
+					/* options: {
+            presets: [
+              '@babel/preset-env',
+              '@babel/preset-typescript'],
+          }, */
+					//* через функцию
+					options: babelOptions(['@babel/preset-typescript']),
+				},
+			},
+			//todo babel для typeScript
+			{
+				test: /\.jsx$/,
+				exclude: /node_modules/,
+				use: {
+					loader: 'babel-loader',
+					/* options: {
+            presets: [
+              '@babel/preset-env',
+              '@babel/preset-typescript'],
+          }, */
+					//* через функцию
+					options: babelOptions(['@babel/preset-react']),
+				},
+			},
+
+			{
+				test: /\.html$/,
+				loader: 'html-loader',
 			},
 		],
 	},

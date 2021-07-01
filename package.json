@@ -1,18 +1,20 @@
 {
 	"name": "rest-countries-api-with-color-theme-switcher-master",
 	"version": "1.0.0",
-	"description": "![Design preview for the REST Countries API with color theme switcher coding challenge](./design/desktop-preview.jpg)",
+	"description": "Design preview for the REST Countries API with color theme switcher coding challenge",
 	"main": "index.js",
 	"scripts": {
-		"test": "jest",
-		"start": "cross-env NODE_ENV=development webpack",
+		"start": "cross-env NODE_ENV=development webpack --mode development",
 		"server": "cross-env NODE_ENV=development webpack serve --mode development --open",
 		"dev": "cross-env NODE_ENV=development webpack --mode development",
 		"build": "cross-env NODE_ENV=production webpack --mode production",
-		"watch": "cross-env NODE_ENV=development webpack --mode development --watch",
-		"stats": "webpack --profile --json > stats.json webpack-bundle-analyzer dist/stats.json"
+		"watch": "cross-env NODE_ENV=development webpack --mode development --watch"
 	},
-	"browserslist": "> 0.25%, not dead",
+	"browserslist": [
+		"> 0.25%",
+		"not dead",
+		"IE11"
+	],
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
@@ -25,6 +27,7 @@
 		"cross-env": "^7.0.3",
 		"css-loader": "^5.2.6",
 		"file-loader": "^6.2.0",
+		"html-loader": "^2.1.2",
 		"html-webpack-plugin": "^5.3.2",
 		"mini-css-extract-plugin": "^1.6.2",
 		"optimize-css-assets-webpack-plugin": "^6.0.1",
@@ -35,5 +38,12 @@
 		"webpack": "^5.41.1",
 		"webpack-cli": "^4.7.2",
 		"webpack-dev-server": "^3.11.2"
+	},
+	"dependencies": {
+		"@babel/polyfill": "^7.12.1",
+		"@fortawesome/fontawesome-free": "^5.15.3",
+		"core-js": "^3.15.2",
+		"path": "^0.12.7",
+		"regenerator-runtime": "^0.13.7"
 	}
 }
