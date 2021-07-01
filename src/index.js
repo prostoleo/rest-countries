@@ -4,3 +4,5 @@ import 'regenerator-runtime/runtime.js';
 // import path from 'path';
 
 import './scss/main.scss';
+
+// console.log('hello from snowpack');

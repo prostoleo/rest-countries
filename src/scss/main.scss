@@ -3,3 +3,9 @@
 @use './components/index' as *;
 @use './layout/index' as *;
 @use './utilities/index' as *;
+
+//! потом убрать
+img {
+	width: 100px !important;
+	height: 100px !important;
+}
