@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<title>Info-Countries</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;600;800&display=swap"
+			rel="stylesheet"
+		/>
+		<!-- <link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+		/> -->
+		<link rel="stylesheet" href="./css/main.css">
+
+		<script
+			type="module"
+			src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+		></script>
+		<script
+			nomodule
+			src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+		></script>
+
+		<script src="./index.js" type="module" defer></script>
+	</head>
+	<body>
+		<header class="header">
+			<div class="container">
+				<a href="#" class="header__logo"><h1>Where in the world?</h1></a>
+				<div class="header__mode">
+					<ion-icon name="moon-outline"></ion-icon>
+					<span class="header__mode-text">Dark Mode</span>
+				</div>
+			</div>
+		</header>
+		<!-- ./header -->
+
+		<section class="filter">
+			<div class="container">
+				<div class="filter__left left-filter">
+					<label for="search-input">Search for a country...</label>
+					<input
+						type="text"
+						class="left-filter__search"
+						name="searchInput"
+						id="search-input"
+					/>
+					<button class="btn left-filter__btn">
+						<ion-icon name="search-outline"></ion-icon>
+					</button>
+				</div>
+				<!-- ./filter__left -->
+
+				<div class="filter__right right-filter">
+
+					<div class="right-filter__header">
+						<h2>Filter by Region</h2>
+						<ion-icon name="chevron-down-outline"></ion-icon>
+					</div>
+					<!-- /.right-filter__header -->
+
+					<form class="right-filter__content content-filter">
+						<div class="content-filter__first-col filter-first">
+							<h3 class="filter-first__title">Region</h3>
+							<div class="filter-first__radio-wrapper radio">
+								<div class="radio-row">
+									<input
+										type="radio"
+										name="Africa"
+										id="input-Africa"
+										class="radio-row__input"
+									/>
+									<label for="input-Africa" class="radio-row__label"
+										>Africa</label
+									>
+								</div>
+								<!-- /.radio-row -->
+								<div class="radio-row">
+									<input
+										type="radio"
+										name="America"
+										id="input-America"
+										class="radio-row__input"
+									/>
+									<label for="input-America" class="radio-row__label"
+										>Americ</label
+									>
+								</div>
+								<!-- /.radio-row -->
+								<div class="radio-row">
+									<input
+										type="radio"
+										name="Asia"
+										id="input-Asia"
+										class="radio-row__input"
+									/>
+									<label for="input-Asia" class="radio-row__label">Asia</label>
+								</div>
+								<!-- /.radio-row -->
+								<div class="radio-row">
+									<input
+										type="radio"
+										name="Europe"
+										id="input-Europe"
+										class="radio-row__input"
+									/>
+									<label for="input-Europe" class="radio-row__label"
+										>Europe</label
+									>
+								</div>
+								<!-- /.radio-row -->
+								<div class="radio-row">
+									<input
+										type="radio"
+										name="Ocenia"
+										id="input-Ocenia"
+										class="radio-row__input"
+									/>
+									<label for="input-Ocenia" class="radio-row__label"
+										>Ocenia</label
+									>
+								</div>
+								<!-- /.radio-row -->
+							</div>
+							<!-- /.filter-first__wrapper -->
+						</div>
+						<!-- /.content-filter__first-col -->
+
+						<div class="content-filter__second-col filter-second">
+							<h3 class="filter-second__title">Sort</h3>
+							<div class="filter-second__content content-second">
+								<button class="btn content-second__btn">
+									Population
+									<ion-icon name="caret-up-outline"></ion-icon>
+								</button>
+								<button class="btn content-second__btn">
+									Country Name
+									<ion-icon name="caret-up-outline"></ion-icon>
+								</button>
+								<button class="btn content-second__btn">
+									Capital Name
+									<ion-icon name="caret-up-outline"></ion-icon>
+								</button>
+							</div>
+							<!-- /.filter-second__content -->
+						</div>
+						<!-- /.content-filter__second-col filter-second -->
+						<div class="content-filter__third-col filter-third">
+							<h3 class="filter-third__title">Filter by Population</h3>
+							<div class="filter-third__content">
+
+								<input type="range" class="filter-third__range-ball--first" max="1500000" min="0.5">
+								<input type="range" class="filter-third__range-ball--second" max="1500000" min="0.5">
+								<input type="range" class="filter-third__range-line" max="1500000" min="0.5">
+								<span class="filter-third__range-values"></span>
+							</div>
+						</div>
+						<!-- /.content-filter__third-col filter-third -->
+
+					</а>
+					<!-- /.right-filter__content content-filter -->
+				</div>
+				<!-- /.filter__right -->
+			</div>
+		</section>
+		<!-- ./filter -->
+
+		<main class="cards">
+			<div class="container">
+				<div class="cards__wrapper">
+
+					<ul class="cards__list">
+						<li class="cards__item">
+							<a href="" class="cards__link card">
+								<img src="../src/img/chuttersnap-5pZk5ytTGBo-unsplash.jpg" alt="" class="card__img">
+								<div class="card__content">
+									<h3 class="card__title">Brazil</h3>
+									<p class="card__text">
+										<span class="card__subtitle"></span>
+										<span class="card__span"></span>
+									</p>
+								</div>
+							</a>
+						</li>
+						<!-- /.cards__item -->
+						<li class="cards__item">
+							<a href="" class="cards__link card">
+								<img src="public/brazil.svg" alt="" class="card__img">
+								<div class="card__content">
+									<h3 class="card__title">Brazil</h3>
+									<p class="card__text">
+										<span class="card__subtitle"></span>
+										<span class="card__span"></span>
+									</p>
+								</div>
+							</a>
+						</li>
+						<!-- /.cards__item -->
+						<li class="cards__item">
+							<a href="" class="cards__link card">
+								<img src="public/brazil.svg" alt="" class="card__img">
+								<div class="card__content">
+									<h3 class="card__title">Brazil</h3>
+									<p class="card__text">
+										<span class="card__subtitle"></span>
+										<span class="card__span"></span>
+									</p>
+								</div>
+							</a>
+						</li>
+						<!-- /.cards__item -->
+						<li class="cards__item">
+							<a href="" class="cards__link card">
+								<img src="public/brazil.svg" alt="" class="card__img">
+								<div class="card__content">
+									<h3 class="card__title">Brazil</h3>
+									<p class="card__text">
+										<span class="card__subtitle"></span>
+										<span class="card__span"></span>
+									</p>
+								</div>
+							</a>
+						</li>
+						<!-- /.cards__item -->
+						<li class="cards__item">
+							<a href="" class="cards__link card">
+								<img src="public/brazil.svg" alt="" class="card__img">
+								<div class="card__content">
+									<h3 class="card__title">Brazil</h3>
+									<p class="card__text">
+										<span class="card__subtitle"></span>
+										<span class="card__span"></span>
+									</p>
+								</div>
+							</a>
+						</li>
+						<!-- /.cards__item -->
+						<li class="cards__item">
+							<a href="" class="cards__link card">
+								<img src="public/brazil.svg" alt="" class="card__img">
+								<div class="card__content">
+									<h3 class="card__title">Brazil</h3>
+									<p class="card__text">
+										<span class="card__subtitle"></span>
+										<span class="card__span"></span>
+									</p>
+								</div>
+							</a>
+						</li>
+						<!-- /.cards__item -->
+						<li class="cards__item">
+							<a href="" class="cards__link card">
+								<img src="public/brazil.svg" alt="" class="card__img">
+								<div class="card__content">
+									<h3 class="card__title">Brazil</h3>
+									<p class="card__text">
+										<span class="card__subtitle"></span>
+										<span class="card__span"></span>
+									</p>
+								</div>
+							</a>
+						</li>
+						<!-- /.cards__item -->
+						<li class="cards__item">
+							<a href="" class="cards__link card">
+								<img src="public/brazil.svg" alt="" class="card__img">
+								<div class="card__content">
+									<h3 class="card__title">Brazil</h3>
+									<p class="card__text">
+										<span class="card__subtitle"></span>
+										<span class="card__span"></span>
+									</p>
+								</div>
+							</a>
+						</li>
+						<!-- /.cards__item -->
+
+
+					</ul>
+					<!-- /.cards__list -->
+
+				</div>
+			</div>
+		</main>
+		<!-- /.cards -->
+	</body>
+</html>
