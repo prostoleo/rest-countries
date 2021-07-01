@@ -11,9 +11,10 @@
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
+		"@parcel/transformer-sass": "^2.0.0-beta.2",
 		"autoprefixer": "^10.2.6",
 		"parcel": "^2.0.0-beta.2",
-		"parcel-plugin-static-files-copy": "^2.6.0",
+		"parcel-plugin-static-files-copy": "file:../..",
 		"postcss": "^8.3.5",
 		"sass": "^1.35.1"
 	},
@@ -30,7 +31,8 @@
 					"> 0.25%",
 					"last 6 versions",
 					"ie >= 11"
-				]
+				],
+				"grid": true
 			}
 		}
 	},
@@ -43,7 +45,15 @@
 	},
 	"browserslist": [
 		"> 0.25%",
-		"not dead",
-		"IE11"
-	]
+		"not dead"
+	],
+	"staticFiles": {
+		"staticPath": [
+			{
+				"staticPath": "src/img",
+				"staticOutDir": "dist/img"
+			}
+		],
+		"watcherGlob": "**"
+	}
 }
