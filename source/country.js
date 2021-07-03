@@ -3,4 +3,4 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime.js';
 // import path from 'path';
 
-import './scss/main.scss';
+// import './scss/main.scss';
