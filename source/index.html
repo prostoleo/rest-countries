@@ -35,10 +35,14 @@
 	<body>
 		<header class="header">
 			<div class="container">
-				<a href="#" class="header__logo"><h1>Where in the world?</h1></a>
-				<div class="header__mode">
-					<ion-icon name="moon-outline"></ion-icon>
-					<span class="header__mode-text">Dark Mode</span>
+				<div class="header__content">
+					<a href="#" class="header__logo">
+						<h1>Where in the world?</h1>
+					</a>
+					<div class="header__mode">
+						<ion-icon name="moon-outline" class="header__mode-icon"></ion-icon>
+						<span class="header__mode-text">Dark Mode</span>
+					</div>
 				</div>
 			</div>
 		</header>
@@ -47,13 +51,13 @@
 		<section class="filter">
 			<div class="container">
 				<div class="filter__left left-filter">
-					<label for="search-input">Search for a country...</label>
 					<input
-						type="text"
-						class="left-filter__search"
-						name="searchInput"
-						id="search-input"
+					type="text"
+					class="left-filter__search"
+					name="searchInput"
+					id="search-input"
 					/>
+					<label for="search-input" class="left-filter__label">Search for a country...</label>
 					<button class="btn left-filter__btn">
 						<ion-icon name="search-outline"></ion-icon>
 					</button>
@@ -63,8 +67,8 @@
 				<div class="filter__right right-filter">
 
 					<div class="right-filter__header">
-						<h2>Filter by Region</h2>
-						<ion-icon name="chevron-down-outline"></ion-icon>
+						<h2 class="right-filter__title">Filter by Region</h2>
+						<ion-icon name="chevron-down-outline" class="right-filter__icon"></ion-icon>
 					</div>
 					<!-- /.right-filter__header -->
 
@@ -94,7 +98,7 @@
 										class="radio-row__input"
 									/>
 									<label for="input-America" class="radio-row__label"
-										>Americ</label
+										>America</label
 									>
 								</div>
 								<!-- /.radio-row -->
@@ -145,16 +149,17 @@
 							<div class="filter-second__content content-second">
 								<button class="btn content-second__btn">
 									Population
-									<ion-icon name="caret-up-outline"></ion-icon>
+										<ion-icon name="caret-up-outline" value="population" class="content-second__btn-icon"></ion-icon>
 								</button>
 								<button class="btn content-second__btn">
-									Country Name
-									<ion-icon name="caret-up-outline"></ion-icon>
+									Country name
+										<ion-icon name="caret-up-outline" value="population" class="content-second__btn-icon"></ion-icon>
 								</button>
 								<button class="btn content-second__btn">
-									Capital Name
-									<ion-icon name="caret-up-outline"></ion-icon>
+									Capital name
+										<ion-icon name="caret-up-outline" value="population" class="content-second__btn-icon"></ion-icon>
 								</button>
+								
 							</div>
 							<!-- /.filter-second__content -->
 						</div>

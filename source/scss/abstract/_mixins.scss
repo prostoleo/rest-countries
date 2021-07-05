@@ -1,6 +1,6 @@
 @use './breakpoints' as *;
 
-$max-width: 1200;
+$max-width: 1500;
 $min-width: 320;
 
 $breakpoints: (
@@ -52,10 +52,6 @@ $xlg: 1200px;
 	}
 }
 
-/* .card__title {
-  @include for-size(big-desktop-up)
-} */
-
 //! работает - передаем свойство - минимальное
 @mixin adaptive-value($property, $pcSize, $mobSize) {
 	$addSize: $pcSize - $mobSize;
@@ -66,7 +62,7 @@ $xlg: 1200px;
 	);
 }
 
-@mixin adaptive-value-min-max($property, $pcSize, $mobSize) {
+@mixin adaptive-value-min-max($property, $mobSize, $pcSize) {
 	$addSize: $pcSize - $mobSize;
 	$maxWidth: $max-width - 320;
 

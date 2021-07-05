@@ -1,0 +1,14 @@
+@use '../abstract/index' as *;
+
+%tpl-card-look {
+	padding: 1em;
+	background: $white;
+	border-radius: 0.75em;
+	box-shadow: 0 3px 15px $Light-Mode-Shadow, 3px -1px 15px $Light-Mode-Shadow;
+}
+
+%tpl-filter-content-header {
+	font-size: 1.4rem;
+	margin-bottom: 1em;
+	color: $Light-Mode-Text;
+}

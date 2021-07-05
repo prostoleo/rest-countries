@@ -41,7 +41,7 @@
 				"overrideBrowserslist": [
 					"> 0.25%",
 					"last 6 versions",
-					"ie >= 10"
+					"ie >= 11"
 				]
 			}
 		}

@@ -43,6 +43,7 @@ module.exports = {
 	devOptions: {
 		/* ... */
 		port: 4545,
+		hmr: false,
 	},
 	buildOptions: {
 		/* ... */
