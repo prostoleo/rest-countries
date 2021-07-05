@@ -1,0 +1,87 @@
+@use '../../abstract/index' as *;
+@use '../../components/index' as *;
+
+.cards {
+	margin-bottom: 5.5em;
+
+	// .cards__wrapper
+
+	&__wrapper {
+		width: 100%;
+	}
+
+	// .cards__list
+
+	&__list {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		justify-content: center;
+
+		gap: clamp(3em, 5vw, 4.5em) clamp(2em, 3.5vw, 3.5em);
+	}
+
+	// .cards__item
+
+	&__item {
+		max-width: 100%;
+
+		@extend %tpl-card-look;
+		padding: 0;
+		// border-radius: 2.5em;
+	}
+
+	// .cards__link
+
+	&__link {
+	}
+}
+.container {
+}
+.card {
+	width: 100%;
+	display: grid;
+	grid-template-rows: auto 1fr;
+
+	// .card__img
+
+	&__img {
+		object-fit: cover;
+		max-width: 100%;
+
+		border-top-left-radius: 0.75em;
+		border-top-right-radius: 0.75em;
+	}
+
+	// .card__content
+
+	&__content {
+		padding: 2em;
+	}
+
+	// .card__title
+
+	&__title {
+		font-size: 1.6rem;
+		font-weight: 800;
+		margin-bottom: 1em;
+		color: $Light-Mode-Text;
+	}
+
+	// .card__text
+
+	&__text {
+		color: $Light-Mode-Text;
+		font-size: 1.4rem;
+	}
+
+	// .card__subtitle
+
+	&__subtitle {
+		font-weight: 600;
+	}
+
+	// .card__span
+
+	&__span {
+	}
+}

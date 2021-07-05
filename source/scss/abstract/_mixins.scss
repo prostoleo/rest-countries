@@ -17,6 +17,12 @@ $breakpoints: (
 	}
 }
 
+@mixin mqOnValue($size) {
+	@media only screen and (min-width: #{$size}px) {
+		@content;
+	}
+}
+
 $med: 600px;
 $lg: 900px;
 $xlg: 1200px;

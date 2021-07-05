@@ -6,6 +6,11 @@ import 'regenerator-runtime/runtime.js';
 // import './scss/main.scss';
 // import '/scss/main.scss';
 
+import filterToggle from './js/filter';
+console.log('filterToggle: ', filterToggle);
+
+filterToggle();
+
 console.log('hello from snowpack');
 
 const getData = async (url) => {

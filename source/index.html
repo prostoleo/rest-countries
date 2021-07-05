@@ -21,6 +21,11 @@
 		<!-- //todo Работал если изначально через prepros туда вывести файл -->
 		<link rel="stylesheet" href="./css/main.css">
 
+		<!-- GSAP -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.0/gsap.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.0/ScrollTrigger.min.js"></script>
+
 		<script
 			type="module"
 			src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
@@ -168,13 +173,17 @@
 							<h3 class="filter-third__title">Filter by Population</h3>
 							<div class="filter-third__content">
 
-								<input type="range" class="filter-third__range-ball--first" max="1500000" min="0.5" value="10000">
-								<input type="range" class="filter-third__range-ball--second" max="1500000" min="0.5" value="10000">
-								<input type="range" class="filter-third__range-line" max="1500000" min="0.5" value="10000">
+								<div class="filter-third__inputs">
+									<input type="range" class="filter-third__range-ball--first" max="1500000" min="0.5" value="10000">
+									<input type="range" class="filter-third__range-ball--second" max="1500000" min="0.5" value="10000">
+									<input type="range" class="filter-third__range-line" max="1500000" min="0.5" value="10000">
+								</div>
+								<!-- /.filter-third__inputs -->
 								<span class="filter-third__range-values">
-									<span class="filter-third__range-min"></span>
+									<span class="filter-third__range-min">1000</span>
 									-
-									<span class="filter-third__range-max"></span>
+									<span class="filter-third__range-max">1500000</span>
+									<!-- /.filter-third__range-values -->
 								</span>
 							</div>
 						</div>
@@ -193,113 +202,198 @@
 				<div class="cards__wrapper">
 
 					<ul class="cards__list">
+
 						<li class="cards__item">
-							<a href="" class="cards__link card">
+							<a href="" class="cards__link card" data-country-id="">
 								<img src="./img/chuttersnap-5pZk5ytTGBo-unsplash.jpg" alt="" class="card__img">
 								<div class="card__content">
-									<h3 class="card__title">Brazil</h3>
+									<h3 class="card__title">Russia</h3>
 									<p class="card__text">
-										<span class="card__subtitle"></span>
-										<span class="card__span"></span>
+										<span class="card__subtitle">Population:</span>
+										<span class="card__span">146.000.000</span>
 									</p>
-								</div>
-							</a>
-						</li>
-						<!-- /.cards__item -->
-						<li class="cards__item">
-							<a href="" class="cards__link card">
-								<img src="./img/chuttersnap-5pZk5ytTGBo-unsplash.jpg" alt="" class="card__img">
-								<div class="card__content">
-									<h3 class="card__title">Brazil</h3>
 									<p class="card__text">
-										<span class="card__subtitle"></span>
-										<span class="card__span"></span>
+										<span class="card__subtitle">Region:</span>
+										<span class="card__span">Europe</span>
 									</p>
-								</div>
-							</a>
-						</li>
-						<!-- /.cards__item -->
-						<li class="cards__item">
-							<a href="" class="cards__link card">
-								<img src="./img/chuttersnap-5pZk5ytTGBo-unsplash.jpg" alt="" class="card__img">
-								<div class="card__content">
-									<h3 class="card__title">Brazil</h3>
 									<p class="card__text">
-										<span class="card__subtitle"></span>
-										<span class="card__span"></span>
-									</p>
-								</div>
-							</a>
-						</li>
-						<!-- /.cards__item -->
-						<li class="cards__item">
-							<a href="" class="cards__link card">
-								<img src="./img/chuttersnap-5pZk5ytTGBo-unsplash.jpg" alt="" class="card__img">
-								<div class="card__content">
-									<h3 class="card__title">Brazil</h3>
-									<p class="card__text">
-										<span class="card__subtitle"></span>
-										<span class="card__span"></span>
-									</p>
-								</div>
-							</a>
-						</li>
-						<!-- /.cards__item -->
-						<li class="cards__item">
-							<a href="" class="cards__link card">
-								<img src="./img/chuttersnap-5pZk5ytTGBo-unsplash.jpg" alt="" class="card__img">
-								<div class="card__content">
-									<h3 class="card__title">Brazil</h3>
-									<p class="card__text">
-										<span class="card__subtitle"></span>
-										<span class="card__span"></span>
-									</p>
-								</div>
-							</a>
-						</li>
-						<!-- /.cards__item -->
-						<li class="cards__item">
-							<a href="" class="cards__link card">
-								<img src="./img/chuttersnap-5pZk5ytTGBo-unsplash.jpg" alt="" class="card__img">
-								<div class="card__content">
-									<h3 class="card__title">Brazil</h3>
-									<p class="card__text">
-										<span class="card__subtitle"></span>
-										<span class="card__span"></span>
-									</p>
-								</div>
-							</a>
-						</li>
-						<!-- /.cards__item -->
-						<li class="cards__item">
-							<a href="" class="cards__link card">
-								<img src="./img/chuttersnap-5pZk5ytTGBo-unsplash.jpg" alt="" class="card__img">
-								<div class="card__content">
-									<h3 class="card__title">Brazil</h3>
-									<p class="card__text">
-										<span class="card__subtitle"></span>
-										<span class="card__span"></span>
-									</p>
-								</div>
-							</a>
-						</li>
-						<!-- /.cards__item -->
-						<li class="cards__item">
-							<a href="" class="cards__link card">
-								<img src="./img/chuttersnap-5pZk5ytTGBo-unsplash.jpg" alt="" class="card__img">
-								<div class="card__content">
-									<h3 class="card__title">Brazil</h3>
-									<p class="card__text">
-										<span class="card__subtitle"></span>
-										<span class="card__span"></span>
+										<span class="card__subtitle">Capital:</span>
+										<span class="card__span">Moscow</span>
 									</p>
 								</div>
 							</a>
 						</li>
 						<!-- /.cards__item -->
 						
-
-
+						<li class="cards__item">
+							<a href="" class="cards__link card" data-country-id="">
+								<img src="./img/chuttersnap-5pZk5ytTGBo-unsplash.jpg" alt="" class="card__img">
+								<div class="card__content">
+									<h3 class="card__title">Russia</h3>
+									<p class="card__text">
+										<span class="card__subtitle">Population:</span>
+										<span class="card__span">146.000.000</span>
+									</p>
+									<p class="card__text">
+										<span class="card__subtitle">Region:</span>
+										<span class="card__span">Europe</span>
+									</p>
+									<p class="card__text">
+										<span class="card__subtitle">Capital:</span>
+										<span class="card__span">Moscow</span>
+									</p>
+								</div>
+							</a>
+						</li>
+						<!-- /.cards__item -->
+						<li class="cards__item">
+							<a href="" class="cards__link card" data-country-id="">
+								<img src="./img/chuttersnap-5pZk5ytTGBo-unsplash.jpg" alt="" class="card__img">
+								<div class="card__content">
+									<h3 class="card__title">Russia</h3>
+									<p class="card__text">
+										<span class="card__subtitle">Population:</span>
+										<span class="card__span">146.000.000</span>
+									</p>
+									<p class="card__text">
+										<span class="card__subtitle">Region:</span>
+										<span class="card__span">Europe</span>
+									</p>
+									<p class="card__text">
+										<span class="card__subtitle">Capital:</span>
+										<span class="card__span">Moscow</span>
+									</p>
+								</div>
+							</a>
+						</li>
+						<!-- /.cards__item -->
+						<li class="cards__item">
+							<a href="" class="cards__link card" data-country-id="">
+								<img src="./img/chuttersnap-5pZk5ytTGBo-unsplash.jpg" alt="" class="card__img">
+								<div class="card__content">
+									<h3 class="card__title">Russia</h3>
+									<p class="card__text">
+										<span class="card__subtitle">Population:</span>
+										<span class="card__span">146.000.000</span>
+									</p>
+									<p class="card__text">
+										<span class="card__subtitle">Region:</span>
+										<span class="card__span">Europe</span>
+									</p>
+									<p class="card__text">
+										<span class="card__subtitle">Capital:</span>
+										<span class="card__span">Moscow</span>
+									</p>
+								</div>
+							</a>
+						</li>
+						<!-- /.cards__item -->
+						<li class="cards__item">
+							<a href="" class="cards__link card" data-country-id="">
+								<img src="./img/chuttersnap-5pZk5ytTGBo-unsplash.jpg" alt="" class="card__img">
+								<div class="card__content">
+									<h3 class="card__title">Russia</h3>
+									<p class="card__text">
+										<span class="card__subtitle">Population:</span>
+										<span class="card__span">146.000.000</span>
+									</p>
+									<p class="card__text">
+										<span class="card__subtitle">Region:</span>
+										<span class="card__span">Europe</span>
+									</p>
+									<p class="card__text">
+										<span class="card__subtitle">Capital:</span>
+										<span class="card__span">Moscow</span>
+									</p>
+								</div>
+							</a>
+						</li>
+						<!-- /.cards__item -->
+						<li class="cards__item">
+							<a href="" class="cards__link card" data-country-id="">
+								<img src="./img/chuttersnap-5pZk5ytTGBo-unsplash.jpg" alt="" class="card__img">
+								<div class="card__content">
+									<h3 class="card__title">Russia</h3>
+									<p class="card__text">
+										<span class="card__subtitle">Population:</span>
+										<span class="card__span">146.000.000</span>
+									</p>
+									<p class="card__text">
+										<span class="card__subtitle">Region:</span>
+										<span class="card__span">Europe</span>
+									</p>
+									<p class="card__text">
+										<span class="card__subtitle">Capital:</span>
+										<span class="card__span">Moscow</span>
+									</p>
+								</div>
+							</a>
+						</li>
+						<!-- /.cards__item -->
+						<li class="cards__item">
+							<a href="" class="cards__link card" data-country-id="">
+								<img src="./img/chuttersnap-5pZk5ytTGBo-unsplash.jpg" alt="" class="card__img">
+								<div class="card__content">
+									<h3 class="card__title">Russia</h3>
+									<p class="card__text">
+										<span class="card__subtitle">Population:</span>
+										<span class="card__span">146.000.000</span>
+									</p>
+									<p class="card__text">
+										<span class="card__subtitle">Region:</span>
+										<span class="card__span">Europe</span>
+									</p>
+									<p class="card__text">
+										<span class="card__subtitle">Capital:</span>
+										<span class="card__span">Moscow</span>
+									</p>
+								</div>
+							</a>
+						</li>
+						<!-- /.cards__item -->
+						<li class="cards__item">
+							<a href="" class="cards__link card" data-country-id="">
+								<img src="./img/chuttersnap-5pZk5ytTGBo-unsplash.jpg" alt="" class="card__img">
+								<div class="card__content">
+									<h3 class="card__title">Russia</h3>
+									<p class="card__text">
+										<span class="card__subtitle">Population:</span>
+										<span class="card__span">146.000.000</span>
+									</p>
+									<p class="card__text">
+										<span class="card__subtitle">Region:</span>
+										<span class="card__span">Europe</span>
+									</p>
+									<p class="card__text">
+										<span class="card__subtitle">Capital:</span>
+										<span class="card__span">Moscow</span>
+									</p>
+								</div>
+							</a>
+						</li>
+						<!-- /.cards__item -->
+						<li class="cards__item">
+							<a href="" class="cards__link card" data-country-id="">
+								<img src="./img/chuttersnap-5pZk5ytTGBo-unsplash.jpg" alt="" class="card__img">
+								<div class="card__content">
+									<h3 class="card__title">Russia</h3>
+									<p class="card__text">
+										<span class="card__subtitle">Population:</span>
+										<span class="card__span">146.000.000</span>
+									</p>
+									<p class="card__text">
+										<span class="card__subtitle">Region:</span>
+										<span class="card__span">Europe</span>
+									</p>
+									<p class="card__text">
+										<span class="card__subtitle">Capital:</span>
+										<span class="card__span">Moscow</span>
+									</p>
+								</div>
+							</a>
+						</li>
+						<!-- /.cards__item -->
+						
 					</ul>
 					<!-- /.cards__list -->
 
