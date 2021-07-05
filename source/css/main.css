@@ -16,7 +16,10 @@ body {
   margin: 0;
   padding: 0;
   font-size: 1rem;
-  background: #fafafa;
+  background: gold;
+  display: -ms-grid;
+  display: grid;
+  place-items: center;
 }
 
 body#index {
@@ -32,7 +35,8 @@ body#country {
 *::before {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 
 img {
@@ -54,7 +58,9 @@ button {
 
 p {
   line-height: 140%;
-  hyphens: auto;
+  -webkit-hyphens: auto;
+      -ms-hyphens: auto;
+          hyphens: auto;
 }
 
 /* Set core body defaults */
@@ -87,11 +93,15 @@ select {
   *,
 *::before,
 *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    -webkit-animation-duration: 0.01ms !important;
+            animation-duration: 0.01ms !important;
+    -webkit-animation-iteration-count: 1 !important;
+            animation-iteration-count: 1 !important;
+    -webkit-transition-duration: 0.01ms !important;
+         -o-transition-duration: 0.01ms !important;
+            transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
 }
-
+/* autoprefixer grid: autoplace */
 /*# sourceMappingURL=main.css.map */

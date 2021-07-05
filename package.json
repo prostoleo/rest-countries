@@ -5,6 +5,8 @@
 	"main": "src/index.html",
 	"scripts": {
 		"start": "snowpack dev",
+		"watch:styles": "sass ./source/scss:source/css --watch",
+		"postcss:styles": "postcss ./source/css/main.css -o ./source/css/main.css -w",
 		"build": "snowpack build"
 	},
 	"browserslist": [
@@ -21,6 +23,8 @@
 		"@snowpack/plugin-webpack": "^3.0.0",
 		"autoprefixer": "^10.2.6",
 		"postcss": "^8.3.5",
+		"postcss-cli": "^8.3.1",
+		"postcss-load-config": "^3.1.0",
 		"sass": "^1.35.1",
 		"snowpack": "^3.7.1"
 	},
@@ -37,7 +41,7 @@
 				"overrideBrowserslist": [
 					"> 0.25%",
 					"last 6 versions",
-					"ie >= 11"
+					"ie >= 10"
 				]
 			}
 		}

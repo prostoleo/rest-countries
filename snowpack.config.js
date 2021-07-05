@@ -20,7 +20,7 @@ module.exports = {
 			{
 				native: true,
 				compilerOptions: {
-					loadPath: '/scss/*.scss',
+					loadPath: '/scss/**/*.scss',
 					style: 'compressed',
 				},
 			},
@@ -49,7 +49,6 @@ module.exports = {
 		/* baseUrl: './',
 		out: 'dist', */
 		out: 'dist',
-		clean: true,
 		minify: true,
 	},
 
