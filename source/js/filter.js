@@ -3,7 +3,7 @@ export default function () {
 
 	//* кнопка меню
 	const toggleFilterBtn = document.querySelector('.right-filter__header');
-	console.log('toggleFilterBtn: ', toggleFilterBtn);
+	// console.log('toggleFilterBtn: ', toggleFilterBtn);
 
 	//* переменная флаг
 	let filterIsOpen = false;

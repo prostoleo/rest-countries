@@ -64,13 +64,15 @@
 		font-size: 1.6rem;
 		font-weight: 800;
 		margin-bottom: 1em;
-		color: $Light-Mode-Text;
+		// color: $Light-Mode-Text;
+		color: var(--text-color);
 	}
 
 	// .card__text
 
 	&__text {
-		color: $Light-Mode-Text;
+		// color: $Light-Mode-Text;
+		color: var(--text-color);
 		font-size: 1.4rem;
 	}
 

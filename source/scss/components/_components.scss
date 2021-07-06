@@ -2,13 +2,16 @@
 
 %tpl-card-look {
 	padding: 1em;
-	background: $white;
+	// background: $elems-bg-color;
+	background: var(--elems-bg-color);
 	border-radius: 0.75em;
-	box-shadow: 0 3px 15px $Light-Mode-Shadow, 3px -1px 15px $Light-Mode-Shadow;
+	// box-shadow: 0 3px 15px $shadow-color, 3px -1px 15px $shadow-color;
+	box-shadow: 0 3px 15px var(--shadow-color), 3px -1px 15px var(--shadow-color);
 }
 
 %tpl-filter-content-header {
 	font-size: 1.4rem;
 	margin-bottom: 1em;
-	color: $Light-Mode-Text;
+	// color: $text-color;
+	color: var(--text-color);
 }

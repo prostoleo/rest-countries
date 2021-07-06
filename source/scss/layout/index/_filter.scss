@@ -2,8 +2,7 @@
 @use '../../components/index' as *;
 
 .filter {
-	margin-top: 1.5em;
-	margin-bottom: 4.5em;
+	margin: 4.5em 0;
 
 	.container {
 		@include mq(med) {
@@ -49,7 +48,8 @@
 		transform: translate(0%, -50%);
 
 		font-size: 1.4em;
-		color: $Light-Mode-Input;
+		// color: $input-color;
+		color: var(--input-color);
 
 		transition: all 250ms linear;
 	}
@@ -57,17 +57,31 @@
 	// .left-filter__search
 
 	&__search {
-		box-shadow: 0 3px 15px $Light-Mode-Shadow, 3px -1px 15px $Light-Mode-Shadow;
-		padding: 1em;
+		// box-shadow: 0 3px 15px $Light-Mode-Shadow, 3px -1px 15px $Light-Mode-Shadow;
+		box-shadow: 0 3px 15px var(--shadow-color),
+			3px -1px 15px var(--shadow-color);
+		padding: 1em 2em;
+		padding-left: 4em;
 		border: none;
 		border-radius: 0.75em;
 
+		background: var(--elems-bg-color);
+		color: var(--text-color);
+
 		width: 100%;
 
+		font-size: 1.4rem;
+
 		&:focus ~ label {
-			transform: translate(-17%, -210%);
+			// transform: translate(-19%, -260%);
+
+			top: 0 !important;
+			left: 0 !important;
+			transform: translate(0%, -150%);
+
 			font-weight: 600;
-			margin-bottom: 0.5em;
+			// margin-bottom: 0.5em;
+			color: var(--text-color);
 		}
 	}
 
@@ -85,7 +99,8 @@
 		font-size: 1.6rem;
 		line-height: 1;
 		font-weight: bold;
-		color: $Light-Mode-Input;
+		// color: $input-color;
+		color: var(--input-color);
 
 		padding: 0.35em;
 	}
@@ -109,14 +124,20 @@
 		align-items: center;
 		justify-content: space-between;
 
+		font-size: 1.4rem;
+
 		padding: 1em;
 		border-radius: 0.75em;
 
 		width: 70%;
 		max-width: 200px;
 
-		background: $white;
-		box-shadow: 0 3px 15px $Light-Mode-Shadow, 3px -1px 15px $Light-Mode-Shadow;
+		// background: $elems-bg-color;
+		background: var(--elems-bg-color);
+		color: var(--text-color);
+		// box-shadow: 0 3px 15px $shadow-color, 3px -1px 15px $shadow-color;
+		box-shadow: 0 3px 15px var(--shadow-color),
+			3px -1px 15px var(--shadow-color);
 
 		cursor: pointer;
 
@@ -246,6 +267,7 @@
 		font-size: 1.4rem;
 		font-weight: 300;
 		margin-left: 0.5em;
+		color: var(--text-color);
 	}
 }
 .filter-second {
@@ -290,7 +312,9 @@
 		font-size: 1.4rem;
 
 		background: transparent;
-		border: 1px solid $Light-Mode-Text;
+		// border: 1px solid $text-color;
+		border: 1px solid var(--text-color);
+		color: var(--text-color);
 
 		isolation: isolate;
 		z-index: 1;
@@ -301,7 +325,7 @@
 		// & > span,
 		&:hover,
 		&:focus {
-			border: 1px solid rgb(58, 165, 129);
+			border: 1px solid var(--accent-color);
 		}
 
 		& > * {
@@ -316,12 +340,12 @@
 		}
 
 		&.active-up > * {
-			fill: rgb(58, 165, 129);
+			fill: var(--accent-color);
 			transition: transform 150ms;
 		}
 
 		&.active-down > * {
-			fill: rgb(58, 165, 129);
+			fill: var(--accent-color);
 			transform: rotate(180deg);
 			transition: transform 150ms;
 		}
@@ -365,6 +389,9 @@
 	// .filter-third__range-values
 
 	&__range-values {
+		color: var(--text-color);
+		font-size: 1.4rem;
+		font-weight: 600;
 	}
 
 	// .filter-third__range-min

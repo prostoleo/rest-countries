@@ -1,17 +1,39 @@
 //todo импортируем core-js и regenerator
 import 'core-js/stable';
 import 'regenerator-runtime/runtime.js';
-// import path from 'path';
-
-// import './scss/main.scss';
-// import '/scss/main.scss';
 
 import filterToggle from './js/filter';
-console.log('filterToggle: ', filterToggle);
 
-filterToggle();
+import switchModeSimple from './js/switchModeSimple';
 
-console.log('hello from snowpack');
+//* проверяем , на какой странице находимся
+const bodyId = document.querySelector('body').id;
+// console.log('bodyId: ', bodyId);
+
+switch (bodyId) {
+	case 'index':
+		initIndexHTML();
+		break;
+	case 'country':
+		initCountryHTML();
+		break;
+
+	default:
+		break;
+}
+
+//* начало на странице index
+function initIndexHTML() {
+	console.log('init index.html');
+	filterToggle();
+	switchModeSimple();
+}
+
+//* начало на странице country
+function initCountryHTML() {
+	console.log('init country.html');
+	switchModeSimple();
+}
 
 const getData = async (url) => {
 	const response = await fetch(url);
@@ -23,4 +45,4 @@ const getData = async (url) => {
 	return data;
 };
 
-getData('https://restcountries.eu/rest/v2/all');
+// getData('https://restcountries.eu/rest/v2/all');

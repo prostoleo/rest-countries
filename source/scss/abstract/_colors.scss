@@ -1,7 +1,32 @@
-$Dark-Mode-Elements: hsl(209, 23%, 22%);
+:root {
+	--text-color: hsl(200, 15%, 8%);
+	--input-color: hsl(0, 0%, 52%);
+	--body-bg-color: hsl(0, 0%, 98%);
+	--shadow-color: hsla(0, 0%, 0%, 0.07);
+	--elems-bg-color: hsl(0, 0%, 100%);
+	--accent-color: hsl(160, 48%, 44%);
+}
+
+.darkmode {
+	--text-color: hsl(0, 0%, 100%);
+	--input-color: hsl(0, 0%, 100%);
+	--body-bg-color: hsl(207, 26%, 17%);
+	--shadow-color: hsla(0, 0%, 0%, 0.07);
+	--elems-bg-color: hsl(209, 23%, 22%);
+	--accent-color: hsl(160, 48%, 44%);
+}
+
+/* $Dark-Mode-Elements: hsl(209, 23%, 22%);
 $Dark-Mode-Bg: hsl(207, 26%, 17%);
 $Light-Mode-Text: hsl(200, 15%, 8%);
 $Light-Mode-Input: hsl(0, 0%, 52%);
 $Light-Mode-Bg: hsl(0, 0%, 98%);
+// $Light-Mode-Bg: #fafafa;
 $Light-Mode-Shadow: hsla(0, 0%, 0%, 0.07);
-$white: hsl(0, 0%, 98%);
+$white: hsl(0, 0%, 100%); */
+//===================================
+$text-color: var(--text-color);
+$input-color: var(--input-color);
+$body-bg-color: var(--body-bg-color);
+$shadow-color: var(--shadow-color);
+$elems-bg-color: var(--elems-bg-color);

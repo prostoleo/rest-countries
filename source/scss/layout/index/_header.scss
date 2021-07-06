@@ -1,7 +1,8 @@
 @use '../../abstract/index' as *;
 
 .header {
-	background: $white;
+	// background: $elems-bg-color;
+	background: var(--elems-bg-color);
 	padding: 1.5em 0;
 
 	box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.1);
@@ -25,20 +26,27 @@
 			@include adaptive-value-min-max(font-size, 20, 30);
 			font-weight: 800;
 			line-height: 1;
-			color: $Light-Mode-Text;
+			// color: $Light-Mode-Text;
+			color: var(--text-color);
 		}
 	}
 
 	// .header__mode
 
 	&__mode {
-		color: $Light-Mode-Text;
+		// color: $Light-Mode-Text;
+		color: var(--text-color);
 		font-size: 1.4rem;
 
 		display: inline-flex;
 		align-items: center;
 
 		margin-left: 1.5em;
+		padding: 0.5em;
+
+		cursor: pointer;
+		border: none;
+		background: transparent;
 	}
 
 	// .header__mode-icon

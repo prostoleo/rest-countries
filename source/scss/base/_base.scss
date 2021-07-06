@@ -13,10 +13,8 @@ body {
 	margin: 0;
 	padding: 0;
 	font-size: 1rem;
-	background: $Light-Mode-Bg;
-	// background: red;
-	// background: gold;
-	// background-image: url('../../img/chuttersnap-5pZk5ytTGBo-unsplash.jpg');
+	// background: $body-bg-color;
+	background: var(--body-bg-color);
 }
 
 body#index {
@@ -25,4 +23,10 @@ body#index {
 
 body#country {
 	font-size: 1.6rem;
+}
+
+html {
+	@include mq(xlg) {
+		font-size: 12px;
+	}
 }

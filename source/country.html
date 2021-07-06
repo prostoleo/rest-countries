@@ -8,6 +8,11 @@
 		<!-- //todo Работал если изначально через prepros туда вывести файл -->
 		<link rel="stylesheet" href="./css/main.css" />
 
+		<!-- GSAP -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.0/gsap.min.js"></script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.0/ScrollTrigger.min.js"></script>
+
 		<script
 			type="module"
 			src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
@@ -19,13 +24,17 @@
 
 		<script src="./index.js" type="module" defer></script>
 	</head>
-	<body>
+	<body id="country">
 		<header class="header">
 			<div class="container">
-				<a href="#" class="header__logo"><h1>Where in the world?</h1></a>
-				<div class="header__mode">
-					<ion-icon name="moon-outline"></ion-icon>
-					<span class="header__mode-text">Dark Mode</span>
+				<div class="header__content">
+					<a href="./index.html" class="header__logo">
+						<h1>Where in the world?</h1>
+					</a>
+					<button class="header__mode">
+						<ion-icon name="moon-outline" class="header__mode-icon"></ion-icon>
+						<span class="header__mode-text">Dark Mode</span>
+					</button>
 				</div>
 			</div>
 		</header>
@@ -34,7 +43,7 @@
 		<main class="country">
 			<div class="container">
 				<button class="btn btn-back">
-					<ion-icon name="arrow-back-outline"></ion-icon>
+					<ion-icon name="arrow-back-outline" class="btn-back__icon"></ion-icon>
 					Back
 				</button>
 				<div class="country__wrapper">
@@ -53,27 +62,27 @@
 							<div class="info-country__col">
 								<p class="info-country__text">
 									<span class="info-country__key">Native Name:</span>
-									<span class="info-cuntry__value">Россия</span>
+									<span class="info-country__value">Россия</span>
 								</p>
 								<!-- /.info-country__text -->
 								<p class="info-country__text">
 									<span class="info-country__key"> Population: </span>
-									<span class="info-cuntry__value"> 146.000.000 </span>
+									<span class="info-country__value"> 146.000.000 </span>
 								</p>
 								<!-- /.info-country__text -->
 								<p class="info-country__text">
 									<span class="info-country__key">Region:</span>
-									<span class="info-cuntry__value">Eastern Europe</span>
+									<span class="info-country__value">Europe</span>
+								</p>
+								<!-- /.info-country__text -->
+								<p class="info-country__text">
+									<span class="info-country__key">Sub Region:</span>
+									<span class="info-country__value">Eastern Europe</span>
 								</p>
 								<!-- /.info-country__text -->
 								<p class="info-country__text">
 									<span class="info-country__key">Capital:</span>
-									<span class="info-cuntry__value">Moscow</span>
-								</p>
-								<!-- /.info-country__text -->
-								<p class="info-country__text">
-									<span class="info-country__key">Native Name:</span>
-									<span class="info-cuntry__value">Россия</span>
+									<span class="info-country__value">Moscow</span>
 								</p>
 								<!-- /.info-country__text -->
 							</div>
@@ -81,17 +90,17 @@
 							<div class="info-country__col">
 								<p class="info-country__text">
 									<span class="info-country__key">Top Level Domain:</span>
-									<span class="info-cuntry__value">.ru</span>
+									<span class="info-country__value">.ru</span>
 								</p>
 								<!-- /.info-country__text -->
 								<p class="info-country__text">
 									<span class="info-country__key"> Currencies: </span>
-									<span class="info-cuntry__value"> Ruble </span>
+									<span class="info-country__value"> Ruble </span>
 								</p>
 								<!-- /.info-country__text -->
 								<p class="info-country__text">
 									<span class="info-country__key">Languages:</span>
-									<span class="info-cuntry__value">Russian,</span>
+									<span class="info-country__value">Russian,</span>
 								</p>
 							</div>
 							<!-- /.info-country__col -->
@@ -100,12 +109,36 @@
 
 						<div class="info-country__content-bottom">
 							<div class="info-country__content-borders borders-content">
-								<span class="borders-content__title">Border Countries:</span>
-								<div class="borders-content__wrapper">
-									<a href="#" class="borders-content__item">Belarus</a>
-									<a href="#" class="borders-content__item">Ukraine</a>
-									<a href="#" class="borders-content__item">Kazakhstan</a>
-								</div>
+								<h4 class="borders-content__title">Border Countries:</h4>
+								<ul class="borders-content__wrapper">
+									<li class="borders-content__item">
+										<a href="#" class="btn borders-content__link">Belarus</a>
+									</li>
+									<li class="borders-content__item">
+										<a href="#" class="btn borders-content__link">Ukraine</a>
+									</li>
+									<li class="borders-content__item">
+										<a href="#" class="btn borders-content__link">Kazakhstan</a>
+									</li>
+									<li class="borders-content__item">
+										<a href="#" class="btn borders-content__link">Finland</a>
+									</li>
+									<li class="borders-content__item">
+										<a href="#" class="btn borders-content__link">China</a>
+									</li>
+									<li class="borders-content__item">
+										<a href="#" class="btn borders-content__link">USA</a>
+									</li>
+									<li class="borders-content__item">
+										<a href="#" class="btn borders-content__link">Belarus</a>
+									</li>
+									<li class="borders-content__item">
+										<a href="#" class="btn borders-content__link">Belarus</a>
+									</li>
+									<li class="borders-content__item">
+										<a href="#" class="btn borders-content__link">Belarus</a>
+									</li>
+								</ul>
 							</div>
 							<!-- /.info-country__content-borders borders-content -->
 						</div>
