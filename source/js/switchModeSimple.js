@@ -2,7 +2,7 @@ export default function () {
 	'use strict';
 
 	let darkMode = localStorage.getItem('country-dark-mode');
-	console.log('darkMode: ', darkMode);
+	// console.log('darkMode: ', darkMode);
 
 	const btnSwitchMode = document.querySelector('.header__mode');
 
@@ -44,12 +44,12 @@ export default function () {
 	//* слушатель события
 	btnSwitchMode.addEventListener('click', (e) => {
 		darkMode = localStorage.getItem('country-dark-mode');
-		console.log('darkMode-add-1: ', localStorage.getItem('country-dark-mode'));
+		// console.log('darkMode-add-1: ', localStorage.getItem('country-dark-mode'));
 		if (darkMode !== 'enabled') {
 			enableDarkMode(e);
 		} else {
 			disableDarkMode(e);
 		}
-		console.log('darkMode-add-2: ', localStorage.getItem('country-dark-mode'));
+		// console.log('darkMode-add-2: ', localStorage.getItem('country-dark-mode'));
 	});
 }
