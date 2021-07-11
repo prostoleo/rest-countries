@@ -10,13 +10,13 @@ import CardsView from './Views/CardsView.js';
 // console.log('CardsView: ', CardsView);
 import CountryView from './Views/CountryView.js';
 import SearchView from './Views/SearchView.js';
+import FilterView from './Views/FilterView.js';
 
 /* console.log('CardsView: ', CardsView);
 console.log('CountryView: ', CountryView); */
 
 import filterToggle from './filter.js';
 import switchModeSimple from './switchModeSimple.js';
-import cardsView from './Views/CardsView.js';
 
 //=====================================================
 // блок на какой странице находимся?
@@ -46,6 +46,8 @@ async function renderAllCountriesCards() {
 	model.state.allCountries = allCountries;
 	console.log('model.state: ', model.state);
 
+	history.pushState(null, null, '/');
+
 	CardsView.render(model.state.allCountries);
 }
 //todo 2 вар - рендерим карточки всех стран
@@ -68,10 +70,11 @@ async function renderAllCountriesCards() {
 	CardsView.render(model.state.search.results);
 } */
 
+//todo контроль поиск стран
 async function controlSearchCountries() {
 	try {
 		//* 0 - рендерим спиннер
-		cardsView.renderSpinner();
+		CardsView.renderSpinner();
 
 		//* 1 - получаем запрос
 		const query = SearchView.getQuery();
@@ -79,9 +82,21 @@ async function controlSearchCountries() {
 		//* 2 - добавляем запрос в state
 		model.state.search.query = query;
 
+		//* 2a - если нет query (пустая строка) - чистим заголовок
+		!query && CardsView.clearCardsHeader();
+
+		//* 2б - меняем url
+		history.pushState(null, null, `/?search=${query}`);
+
 		//* 3 формируем запрос
 		const data = await model.getData(query);
 		console.log('data: ', data);
+
+		//* 3a - если данных нет - выводим ошибку
+		if (data.length === 0)
+			CardsView.renderError(
+				`Sorry, no country was found on your query <span>${query}</span>😞 Try search for something else!`
+			);
 
 		//* 4 - результат помещаем в state
 		model.state.search.results = data;
@@ -92,8 +107,21 @@ async function controlSearchCountries() {
 		//* 6 - рендерим сообщение
 		CardsView.renderMessage(model.state.search.query);
 	} catch (err) {
-		console.error(`💣💣💣 ${err.message} ${err.status}`);
+		console.warn(`💣💣💣 ${err.message} ${err.status}`);
+
+		if (err.message.includes('404')) {
+			CardsView.renderError(
+				`Sorry, no country was found on your query <span>${model.state.search.query}</span>😞 Try search for something else!`
+			);
+
+			CardsView.clear();
+		}
 	}
+}
+
+//todo фильтры и сортировка
+async function controlFilterRegion(region) {
+	console.log('controlFilterCountries: ');
 }
 
 //=====================================================
@@ -115,6 +143,9 @@ async function initIndexHTML() {
 	//todo отображаем страны по поиску
 	// renderCountriesCards();
 	SearchView.addHandlerSearch(controlSearchCountries);
+
+	//todo отбражаем страны по фильтрам
+	// FilterView.addHandlerFilterRegion(controlFilterRegion);
 }
 
 //* начало на странице country

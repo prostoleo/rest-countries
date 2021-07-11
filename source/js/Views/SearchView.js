@@ -24,6 +24,13 @@ class SearchView {
 	}
 
 	getQuery() {
+		/* const query = this._input.value.trim();
+		if (query) {
+			return query;
+		} else {
+			this._clearCardsHeader();
+		} */
+
 		return this._input.value.trim();
 	}
 }

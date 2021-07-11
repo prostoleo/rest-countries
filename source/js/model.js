@@ -39,6 +39,7 @@ export const state = {
 		// resultsPerPage: 12, // number - cur not supported
 	},
 	filter: {
+		result: [], // array of sorted results
 		region: null, //string
 		byPopulation: {
 			min: null, // number
@@ -80,7 +81,7 @@ export async function getData(query = null) {
 
 		//* обработка ошибки
 	} catch (err) {
-		console.error(`💣💣💣 ${err.message}`);
+		// console.error(`💣💣💣 ${err.message}`);
 		throw err;
 	}
 }

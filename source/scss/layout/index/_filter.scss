@@ -196,6 +196,8 @@
 	opacity: 0;
 	transition: all 250ms ease-in-out;
 
+	z-index: 100;
+
 	@include mq(med) {
 		transform-origin: top right !important;
 		clip-path: border-box circle(0% at 100% 0%);

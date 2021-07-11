@@ -1,6 +1,7 @@
 class CardsView {
 	_data;
 	_parentEl = document.querySelector('.cards__list');
+	_cardsHeader = document.querySelector('.cards__header');
 	_errorMessage = 'Oops, some error occured 😞 Try again later!';
 	_errorNoCountrySearch =
 		'Sorry, no country was found 😞 Try search for something else!';
@@ -26,7 +27,7 @@ class CardsView {
 		console.log('this._data: ', this._data);
 
 		//* очищаем parentEl
-		this._clear();
+		this.clear();
 
 		const html = this._generateMarkup(this._data);
 		// console.log('html: ', html);
@@ -34,7 +35,7 @@ class CardsView {
 		this._parentEl.insertAdjacentHTML('afterbegin', html);
 	}
 
-	_clear() {
+	clear() {
 		this._parentEl.innerHTML = '';
 	}
 
@@ -49,7 +50,9 @@ class CardsView {
               <h3 class="card__title">${country.name}</h3>
               <p class="card__text">
                 <span class="card__subtitle">Population:</span>
-                <span class="card__span">${country.population}</span>
+                <span class="card__span">${this.formatPopulation(
+									country.population
+								)}</span>
               </p>
               <p class="card__text">
                 <span class="card__subtitle">Region:</span>
@@ -68,7 +71,7 @@ class CardsView {
 	}
 
 	renderSpinner() {
-		this._clear();
+		this.clear();
 
 		const html = `
 			<div class="cards__spinner-wrapper">
@@ -84,15 +87,27 @@ class CardsView {
 
 		const html = `<h2 class="cards__title">${msg}</h2>`;
 
-		this._clear();
+		// this.clearCardsHeader();
 
-		this._parentEl.insertAdjacentHTML('beforebegin', html);
+		this._cardsHeader.innerHTML = html;
 	}
 
 	renderMessage(query) {
+		// this.clearCardsHeader();
+
 		const html = `<h2 class="cards__title">Results on query: <span>${query}</span></h2>`;
 
-		this._parentEl.insertAdjacentHTML('beforebegin', html);
+		this._cardsHeader.innerHTML = html;
+	}
+
+	clearCardsHeader() {
+		this._cardsHeader.innerHTML = '';
+	}
+
+	formatPopulation(num) {
+		const locale = navigator.language;
+
+		return Intl.NumberFormat(locale).format(num);
 	}
 }
 
