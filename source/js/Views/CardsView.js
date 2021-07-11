@@ -1,9 +1,12 @@
 class CardsView {
 	_data;
 	_parentEl = document.querySelector('.cards__list');
+	_errorMessage = 'Oops, some error occured 😞 Try again later!';
+	_errorNoCountrySearch =
+		'Sorry, no country was found 😞 Try search for something else!';
 
 	constructor() {
-		console.log('_parentEl: ', this._parentEl);
+		// console.log('_parentEl: ', this._parentEl);
 	}
 
 	hello() {
@@ -11,7 +14,13 @@ class CardsView {
 	}
 
 	//todo рендерим
-	render(data) {
+	render(data, errMsg = null) {
+		console.log('data: ', data);
+		//* проверка получили ли данные
+		if (data.length === 0) {
+			// this.renderError(this._errorNoCountrySearch);
+			return;
+		}
 		//* присваиваем данные
 		this._data = data;
 		console.log('this._data: ', this._data);
@@ -19,7 +28,7 @@ class CardsView {
 		//* очищаем parentEl
 		this._clear();
 
-		const html = this.generateMarkup(this._data);
+		const html = this._generateMarkup(this._data);
 		// console.log('html: ', html);
 
 		this._parentEl.insertAdjacentHTML('afterbegin', html);
@@ -29,7 +38,7 @@ class CardsView {
 		this._parentEl.innerHTML = '';
 	}
 
-	generateMarkup(data) {
+	_generateMarkup(data) {
 		return data
 			.map((country) => {
 				return `
@@ -56,6 +65,34 @@ class CardsView {
       `;
 			})
 			.join('');
+	}
+
+	renderSpinner() {
+		this._clear();
+
+		const html = `
+			<div class="cards__spinner-wrapper">
+				<img src="./img/icons/fontisto_spinner.svg" alt="spinner icon" class="cards__spinner">
+			</div>
+		`;
+
+		this._parentEl.insertAdjacentHTML('afterbegin', html);
+	}
+
+	renderError(errMsg) {
+		const msg = errMsg ?? this._errorMessage;
+
+		const html = `<h2 class="cards__title">${msg}</h2>`;
+
+		this._clear();
+
+		this._parentEl.insertAdjacentHTML('beforebegin', html);
+	}
+
+	renderMessage(query) {
+		const html = `<h2 class="cards__title">Results on query: <span>${query}</span></h2>`;
+
+		this._parentEl.insertAdjacentHTML('beforebegin', html);
 	}
 }
 

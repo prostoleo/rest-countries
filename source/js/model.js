@@ -7,6 +7,10 @@ import { API_URL_ALL, API_URL_QUERY, TIMEOUT_SEC } from './config.js';
 import { timeout } from './helper.js';
 
 // console.log('model');
+
+//=====================================================
+// блок на какой странице находимся?
+
 //* проверяем , на какой странице находимся
 const bodyId = document.querySelector('body').id;
 // console.log('bodyId: ', bodyId);
@@ -22,6 +26,9 @@ switch (bodyId) {
 	default:
 		break;
 }
+
+//=====================================================
+// блок state
 
 //todo state
 export const state = {
@@ -45,21 +52,14 @@ export const state = {
 	},
 };
 
-//* начало на странице index
-function initIndexHTML() {
-	console.log('init index.html');
-}
-
-//* начало на странице country
-function initCountryHTML() {
-	console.log('init country.html');
-}
+//=====================================================
+// блок функций вспомогательных
 
 export async function getData(query = null) {
 	try {
 		//* формируем запрос на Rest countries , если есть query
 		const request = query
-			? fetch(`${API_URL_QUERY}${query}`)
+			? fetch(`${API_URL_QUERY}/${query}`)
 			: fetch(API_URL_ALL);
 
 		//* гонка между таймером и запросом
@@ -83,4 +83,34 @@ export async function getData(query = null) {
 		console.error(`💣💣💣 ${err.message}`);
 		throw err;
 	}
+}
+
+/* const bel = await getData('bel');
+console.log('bel: ', bel); */
+
+//=====================================================
+// блок функций
+
+export async function searchCountriesOnQuery(query) {
+	//todo получаем данные по поисковому запросу
+	const data = await getData(query.toLowerCase());
+	console.log('data: ', data);
+
+	//* обновляем state
+	state.search.query = query;
+	state.search.results = data;
+	console.log('state.search: ', state.search);
+}
+
+//=====================================================
+// блок инициализации
+
+//* начало на странице index
+function initIndexHTML() {
+	console.log('init index.html');
+}
+
+//* начало на странице country
+function initCountryHTML() {
+	console.log('init country.html');
 }
