@@ -42,8 +42,11 @@ switch (bodyId) {
 
 //todo рендерим карточки всех стран
 async function renderAllCountriesCards() {
-	const allCountries = await model.getData();
-	model.state.allCountries = allCountries;
+	//* если нет всех стран - запрашиваем, иначе рендерим что есть
+	if (model.state.allCountries.length === 0) {
+		const allCountries = await model.getData();
+		model.state.allCountries = allCountries;
+	}
 	console.log('model.state: ', model.state);
 
 	history.pushState(null, null, '/');
@@ -122,6 +125,61 @@ async function controlSearchCountries() {
 //todo фильтры и сортировка
 async function controlFilterRegion(region) {
 	console.log('controlFilterCountries: ');
+
+	console.log('region: ', region);
+
+	//* если не получили регион
+	if (!region) {
+		//* 0 - рендерим спиннер
+		CardsView.renderSpinner();
+
+		//* если был поиск - рендерим поиск, иначе рендерим все карточки
+		if (model.state.search.results.length > 0) {
+			//* 3 - рендерим данные по поиску
+			CardsView.render(model.state.search.results);
+
+			//* 4 - рендерим сообщение если query есть
+			model.state.search.query &&
+				CardsView.renderMessage(model.state.search.query);
+		} else {
+			await renderAllCountriesCards();
+		}
+
+		return;
+	}
+
+	//* 0 - рендерим спиннер
+	CardsView.renderSpinner();
+
+	//* 1 - фильтруем данные и добавляем region и data в state
+	const data =
+		model.state.search.results.length > 0
+			? model.state.search.results.filter(
+					(country) => country.region === region
+			  )
+			: model.state.allCountries.filter((country) => country.region === region);
+
+	console.log('data: ', data);
+
+	model.state.filter.region = region;
+	model.state.filter.results = data;
+
+	//* 2 - если нет по фильтру, то рендерим ошибку
+	if (data.length === 0) {
+		CardsView.renderError(
+			`Sorry, no country was found on filter input <span>${model.state.filter.region}</span>😞 Try other filters!`
+		);
+
+		CardsView.clear();
+
+		return;
+	}
+
+	//* 3 - рендерим данные
+	CardsView.render(model.state.filter.results);
+
+	//* 4 - рендерим сообщение если query есть
+	model.state.search.query && CardsView.renderMessage(model.state.search.query);
 }
 
 //=====================================================
@@ -144,8 +202,8 @@ async function initIndexHTML() {
 	// renderCountriesCards();
 	SearchView.addHandlerSearch(controlSearchCountries);
 
-	//todo отбражаем страны по фильтрам
-	// FilterView.addHandlerFilterRegion(controlFilterRegion);
+	//todo отбражаем страны по фильтрам региона
+	FilterView.addHandlerFilterRegion(controlFilterRegion);
 }
 
 //* начало на странице country

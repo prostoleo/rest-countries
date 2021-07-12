@@ -8,8 +8,24 @@ class FilterView {
 
 	addHandlerFilterRegion(handler) {
 		this._parentEl.addEventListener('change', (e) => {
-			const value = e.target.value;
-			handler(value);
+			//* проверяем кликнули ли в область региона
+			const wrapper = e.target.closest('.radio');
+			console.log('wrapper: ', wrapper);
+
+			if (!wrapper) return;
+
+			console.log('e.target.checked: ', e.target.checked);
+
+			//* проверка - если не чекнутый просто вызываем, иначе получаем value
+			if (!e.target.checked) {
+				// e.target.checked = false;
+				handler();
+			} else {
+				const value = e.target.value;
+				console.log('value: ', value);
+
+				handler(value);
+			}
 		});
 	}
 }

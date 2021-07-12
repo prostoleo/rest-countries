@@ -93,7 +93,7 @@ class CardsView {
 	}
 
 	renderMessage(query) {
-		// this.clearCardsHeader();
+		this.clearCardsHeader();
 
 		const html = `<h2 class="cards__title">Results on query: <span>${query}</span></h2>`;
 

@@ -31,7 +31,8 @@ switch (bodyId) {
 // блок state
 
 //todo state
-export const state = {
+export const state = JSON.parse(localStorage.getItem('countries-state')) ?? {
+	allCountries: [], // Array of objects - all countries
 	search: {
 		query: '', // string - search value
 		results: [], // Array of objects - data to render
@@ -39,7 +40,7 @@ export const state = {
 		// resultsPerPage: 12, // number - cur not supported
 	},
 	filter: {
-		result: [], // array of sorted results
+		results: [], // array of sorted results
 		region: null, //string
 		byPopulation: {
 			min: null, // number
