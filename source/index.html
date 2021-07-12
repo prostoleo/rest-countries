@@ -89,6 +89,7 @@
 										id="input-Africa"
 										value="Africa"
 										class="radio-row__input"
+										
 									/>
 									<label for="input-Africa" class="radio-row__label"
 										>Africa</label
@@ -140,8 +141,21 @@
 										value="Oceania"
 										class="radio-row__input"
 									/>
-									<label for="input-Ocenia" class="radio-row__label"
+									<label for="input-Oceania" class="radio-row__label"
 										>Oceania</label
+									>
+								</div>
+								<!-- /.radio-row -->
+								<div class="radio-row">
+									<input
+										type="radio"
+										name="region"
+										id="input-all"
+										value="all"
+										class="radio-row__input"
+									/>
+									<label for="input-all" class="radio-row__label"
+										>All</label
 									>
 								</div>
 								<!-- /.radio-row -->
@@ -153,15 +167,15 @@
 						<div class="content-filter__second-col filter-second">
 							<h3 class="filter-second__title">Sort</h3>
 							<div class="filter-second__content content-second">
-								<button class="btn content-second__btn" type="button">
+								<button class="btn content-second__btn" type="button" data-name="population" data-sort="none">
 									Population
 										<ion-icon name="caret-up-outline" value="population" class="content-second__btn-icon"></ion-icon>
 								</button>
-								<button class="btn content-second__btn" type="button">
+								<button class="btn content-second__btn active-up" type="button" data-name="name" data-sort="up">
 									Country name
 										<ion-icon name="caret-up-outline" value="population" class="content-second__btn-icon"></ion-icon>
 								</button>
-								<button class="btn content-second__btn" type="button">
+								<button class="btn content-second__btn" type="button" data-name="capital" data-sort="none">
 									Capital name
 										<ion-icon name="caret-up-outline" value="population" class="content-second__btn-icon"></ion-icon>
 								</button>

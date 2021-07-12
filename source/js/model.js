@@ -33,6 +33,7 @@ switch (bodyId) {
 //todo state
 export const state = JSON.parse(localStorage.getItem('countries-state')) ?? {
 	allCountries: [], // Array of objects - all countries
+	currentData: [], // Array of objects - currentData
 	search: {
 		query: '', // string - search value
 		results: [], // Array of objects - data to render
@@ -41,16 +42,16 @@ export const state = JSON.parse(localStorage.getItem('countries-state')) ?? {
 	},
 	filter: {
 		results: [], // array of sorted results
-		region: null, //string
+		region: 'all', //string
 		byPopulation: {
 			min: null, // number
 			max: null, // number
 		},
 	},
 	sort: {
-		population: null, // string - 'asc' / 'des' , default = null
-		countryName: null, // string - 'asc' / 'des' , default = null
-		capitalName: null, // string - 'asc' / 'des' , default = null
+		population: 'none', // string - 'up' / 'down' , default = null
+		countryName: 'up', // string - 'up' / 'down' /  , default = up
+		capitalName: 'none', // string - 'up' / 'down' , default = null
 	},
 };
 
@@ -87,13 +88,30 @@ export async function getData(query = null) {
 	}
 }
 
+//todo получаем параметры поиска
+export function getUrlSearchParams() {
+	const url = window.location.search;
+	console.log('url: ', url);
+
+	const params = new URLSearchParams(url);
+	console.log('params: ', params);
+
+	const searchParams = {};
+
+	for (const [key, value] of params) {
+		searchParams[key] = value;
+	}
+
+	return searchParams;
+}
+
 /* const bel = await getData('bel');
 console.log('bel: ', bel); */
 
 //=====================================================
 // блок функций
 
-export async function searchCountriesOnQuery(query) {
+/* export async function searchCountriesOnQuery(query) {
 	//todo получаем данные по поисковому запросу
 	const data = await getData(query.toLowerCase());
 	console.log('data: ', data);
@@ -102,7 +120,7 @@ export async function searchCountriesOnQuery(query) {
 	state.search.query = query;
 	state.search.results = data;
 	console.log('state.search: ', state.search);
-}
+} */
 
 //=====================================================
 // блок инициализации

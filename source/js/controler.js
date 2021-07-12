@@ -42,10 +42,14 @@ switch (bodyId) {
 
 //todo рендерим карточки всех стран
 async function renderAllCountriesCards() {
+	console.log('model.state: ', model.state);
+
 	//* если нет всех стран - запрашиваем, иначе рендерим что есть
 	if (model.state.allCountries.length === 0) {
 		const allCountries = await model.getData();
 		model.state.allCountries = allCountries;
+		model.state.currentData = allCountries;
+		model.state.filter.results = allCountries;
 	}
 	console.log('model.state: ', model.state);
 
@@ -76,6 +80,10 @@ async function renderAllCountriesCards() {
 //todo контроль поиск стран
 async function controlSearchCountries() {
 	try {
+		console.log('model.state: ', model.state);
+
+		FilterView.btnRemoveClasses();
+
 		//* 0 - рендерим спиннер
 		CardsView.renderSpinner();
 
@@ -86,7 +94,12 @@ async function controlSearchCountries() {
 		model.state.search.query = query;
 
 		//* 2a - если нет query (пустая строка) - чистим заголовок
-		!query && CardsView.clearCardsHeader();
+		if (!query) {
+			CardsView.clearCardsHeader();
+
+			/* CardsView.render(model.state.allCountries);
+			return; */
+		}
 
 		//* 2б - меняем url
 		history.pushState(null, null, `/?search=${query}`);
@@ -103,6 +116,9 @@ async function controlSearchCountries() {
 
 		//* 4 - результат помещаем в state
 		model.state.search.results = data;
+
+		model.state.currentData = data;
+		model.state.filter.results = data;
 
 		//* 5 - рендерим результат
 		CardsView.render(model.state.search.results);
@@ -128,9 +144,11 @@ async function controlFilterRegion(region) {
 
 	console.log('region: ', region);
 
+	console.log('model.state: ', model.state);
+
 	//* если не получили регион
-	if (!region) {
-		//* 0 - рендерим спиннер
+	if (region === 'all') {
+		/* //* 0 - рендерим спиннер
 		CardsView.renderSpinner();
 
 		//* если был поиск - рендерим поиск, иначе рендерим все карточки
@@ -143,7 +161,8 @@ async function controlFilterRegion(region) {
 				CardsView.renderMessage(model.state.search.query);
 		} else {
 			await renderAllCountriesCards();
-		}
+		} */
+		CardsView.render(model.state.currentData);
 
 		return;
 	}
@@ -182,6 +201,38 @@ async function controlFilterRegion(region) {
 	model.state.search.query && CardsView.renderMessage(model.state.search.query);
 }
 
+//todo функция сортировки
+async function controlSort(name, sort) {
+	// model.state.filter.results = model.state.filter.results.sort(a[name] - )
+	console.log({ name, sort });
+	console.log('model.state: ', model.state);
+
+	switch (sort) {
+		case 'none':
+		case 'down':
+			model.state.filter.results.sort((a, b) => {
+				return name === 'population'
+					? +a[name] - +b[name]
+					: a[name].localeCompare(b[name]);
+			});
+			break;
+
+		case 'up':
+			model.state.filter.results.sort((a, b) => {
+				return name === 'population'
+					? +b[name] - +a[name]
+					: b[name].localeCompare(a[name]);
+			});
+			break;
+
+		default:
+			break;
+	}
+
+	//* отображаем результат
+	CardsView.render(model.state.filter.results);
+}
+
 //=====================================================
 // блок инициализации
 
@@ -202,8 +253,11 @@ async function initIndexHTML() {
 	// renderCountriesCards();
 	SearchView.addHandlerSearch(controlSearchCountries);
 
-	//todo отбражаем страны по фильтрам региона
+	//todo отображаем страны по фильтрам региона
 	FilterView.addHandlerFilterRegion(controlFilterRegion);
+
+	//todo отображаем страны по сортировке
+	FilterView.addHandlerSort(controlSort);
 }
 
 //* начало на странице country
