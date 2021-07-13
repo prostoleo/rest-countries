@@ -43,7 +43,9 @@ class CardsView {
 			.map((country) => {
 				return `
         <li class="cards__item">
-          <a href="/country.html" class="cards__link card" data-country-id="">
+          <a href="/country.html" class="cards__link card" data-country-id="${
+						country.alpha3Code
+					}">
             <img src="${country.flag}" alt="" class="card__img">
             <div class="card__content">
               <h3 class="card__title">${country.name}</h3>

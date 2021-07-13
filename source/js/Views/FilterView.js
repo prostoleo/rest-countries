@@ -112,11 +112,14 @@ class FilterView {
 				//* получаем label
 				const labels = wrapper.querySelectorAll('.label-num');
 
-				labels[0].textContent = `${this._formatPopulation(min)} k`;
-				labels[1].textContent = `${this._formatPopulation(max)} k`;
+				// labels[0].textContent = `${this._formatPopulation(min)} k`;
+				// labels[1].textContent = `${this._formatPopulation(max)} k`;
+				labels[0].textContent = `${this._formatPopulation(min)}`;
+				labels[1].textContent = `${this._formatPopulation(max)}`;
 
 				//* вызываем функцию и отображаем в чел, а не в тыс. чел
-				handler(min * 1000, max * 1000);
+				// handler(min * 1000, max * 1000);
+				handler(min, max);
 			})
 		);
 	}
@@ -132,9 +135,9 @@ class FilterView {
 			btn.classList.remove('active-down', 'active-up');
 			btn.dataset.sort = 'none';
 
-			if (btn.dataset.name === 'name') {
+			/* if (btn.dataset.name === 'name') {
 				btn.classList.add('active-up');
-			}
+			} */
 		});
 	}
 }

@@ -44,14 +44,15 @@ export const state = JSON.parse(localStorage.getItem('countries-state')) ?? {
 		results: [], // array of sorted results
 		region: 'all', //string
 		byPopulation: {
-			min: null, // number
-			max: null, // number
+			min: 0, // number
+			max: 1400000, // number
 		},
 	},
 	sort: {
-		population: 'none', // string - 'up' / 'down' , default = null
-		countryName: 'up', // string - 'up' / 'down' /  , default = up
-		capitalName: 'none', // string - 'up' / 'down' , default = null
+		population: 'none', // string - 'up' / 'down' , default = none
+		// countryName: 'up', // string - 'up' / 'down' /  , default = up
+		countryName: 'none', // string - 'up' / 'down' /  , default = none
+		capitalName: 'none', // string - 'up' / 'down' , default = none
 	},
 };
 
@@ -86,6 +87,11 @@ export async function getData(query = null) {
 		// console.error(`💣💣💣 ${err.message}`);
 		throw err;
 	}
+}
+
+//todo обновляем localStorage
+export function updateLS() {
+	localStorage.setItem('countries-state', JSON.stringify(state));
 }
 
 //todo получаем параметры поиска

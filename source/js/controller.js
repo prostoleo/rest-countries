@@ -3,6 +3,7 @@
 //todo импортируем core-js и regenerator
 import 'core-js/stable';
 import 'regenerator-runtime/runtime.js';
+// import '../../node_modules/lodash.clonedeep/index';
 
 //* мои импорты
 import * as model from './model.js';
@@ -147,47 +148,67 @@ async function controlFilterRegion(region) {
 	// CardsView.clearCardsHeader();
 
 	//* если не получили регион
-	if (region === 'all') {
-		/* //* 0 - рендерим спиннер
-		CardsView.renderSpinner();
+	/* if (region === 'all') {
+		//* старый старый )
+		//* 0 - рендерим спиннер
+		// CardsView.renderSpinner();
 
-		//* если был поиск - рендерим поиск, иначе рендерим все карточки
-		if (model.state.search.results.length > 0) {
-			//* 3 - рендерим данные по поиску
-			CardsView.render(model.state.search.results);
+		// //* если был поиск - рендерим поиск, иначе рендерим все карточки
+		// if (model.state.search.results.length > 0) {
+		// 	//* 3 - рендерим данные по поиску
+		// 	CardsView.render(model.state.search.results);
 
-			//* 4 - рендерим сообщение если query есть
-			model.state.search.query &&
-				CardsView.renderMessage(model.state.search.query);
-		} else {
-			await renderAllCountriesCards();
-		} */
+		// 	//* 4 - рендерим сообщение если query есть
+		// 	model.state.search.query &&
+		// 		CardsView.renderMessage(model.state.search.query);
+		// } else {
+		// 	await renderAllCountriesCards();
+		// }
 
 		model.state.filter.results.length > 0
 			? CardsView.render(model.state.filter.results)
 			: CardsView.render(model.state.currentData);
 
 		return;
-	}
+	} */
 
 	//* 0 - рендерим спиннер
 	CardsView.renderSpinner();
 
 	//* 1 - фильтруем данные и добавляем region и data в state
-	const data =
+
+	//* старый вариант
+	/* const data =
 		model.state.filter.results.length > 0
 			? model.state.filter.results.filter(
 					(country) => country.region === region
 			  )
 			: model.state.currentData.filter((country) => country.region === region);
 
-	console.log('data: ', data);
+	console.log('data: ', data); */
 
+	/* model.state.filter.region = region;
+	model.state.filter.results = data; */
+
+	//* новый вариант
 	model.state.filter.region = region;
-	model.state.filter.results = data;
+
+	//* обновляем model.state.filter.results
+	await updateFilteredResults(model.state.currentData);
 
 	//* 2 - если нет по фильтру, то рендерим ошибку
-	if (data.length === 0) {
+	//* старый вариант
+	/* if (data.length === 0) {
+		CardsView.renderError(
+			`Sorry, no country was found on filter input <span>${model.state.filter.region}</span>😞 Try other filters!`
+		);
+
+		CardsView.clear();
+
+		return;
+	} */
+	//* новый вариант
+	if (model.state.filter.results.length === 0) {
 		CardsView.renderError(
 			`Sorry, no country was found on filter input <span>${model.state.filter.region}</span>😞 Try other filters!`
 		);
@@ -212,7 +233,14 @@ async function controlSort(name, sort) {
 	console.log({ name, sort });
 	console.log('controlSort-1 - model.state: ', model.state);
 
-	switch (sort) {
+	//* обновляем state.sort
+	updateSortState(name, sort);
+
+	//* обновляем state.filter.results
+	await updateFilteredResults(model.state.currentData);
+
+	//* старый вариант
+	/* 	switch (sort) {
 		case 'none':
 		case 'down':
 			model.state.filter.results.sort((a, b) => {
@@ -232,7 +260,7 @@ async function controlSort(name, sort) {
 
 		default:
 			break;
-	}
+	} */
 
 	//* отображаем результат
 	CardsView.render(model.state.filter.results);
@@ -248,21 +276,28 @@ async function controlFilterPopulation(min, max) {
 	//* 0 - рендерим спиннер
 	CardsView.renderSpinner();
 
+	//* обновляем данные
+	model.state.filter.byPopulation.min = min;
+	model.state.filter.byPopulation.max = max;
+
 	//* 1 - меняем данные в state.filter.results
-	const data =
+	/* const data =
 		model.state.filter.results.length > 0
 			? model.state.filter.results.filter(
 					(country) => country.population >= min && country.population <= max
 			  )
 			: model.state.currentData.filter(
 					(country) => country.population >= min && country.population <= max
-			  );
+			  ); */
 
-	model.state.filter.results = data;
-	model.state.filter.byPopulation.min = min;
-	model.state.filter.byPopulation.max = max;
+	//* новый вариант
+	await updateFilteredResults(model.state.currentData);
 
-	console.log('controlFilterPopulation - model.state:', model.state);
+	//* старый вариант
+	// model.state.filter.results = data;
+
+	/* model.state.filter.byPopulation.min = min;
+	model.state.filter.byPopulation.max = max; */
 
 	//* 2 - рендерим результат
 	CardsView.render(model.state.filter.results);
@@ -270,6 +305,92 @@ async function controlFilterPopulation(min, max) {
 	console.log('controlFilterPopulation-2 - model.state:', model.state);
 }
 
+//todo обновляем filtereResults
+async function updateFilteredResults(countries) {
+	console.log('update FilterResults - countries: ', countries);
+	//* проверяем где значение не 'none'
+	const res = await whereSortIsNotNone();
+	const [name, sort] = res;
+
+	const data = countries
+		.filter((country) => {
+			return model.state.filter.region === 'all'
+				? country
+				: country.region === model.state.filter.region;
+		})
+		.filter((country) => {
+			return (
+				country.population >= model.state.filter.byPopulation.min &&
+				country.population <= model.state.filter.byPopulation.max
+			);
+		});
+
+	if (name && sort) {
+		switch (sort) {
+			case 'down':
+				data.sort((a, b) => {
+					return name === 'population'
+						? +a[name] - +b[name]
+						: a[name].localeCompare(b[name]);
+				});
+				break;
+
+			case 'up':
+				data.sort((a, b) => {
+					return name === 'population'
+						? +b[name] - +a[name]
+						: b[name].localeCompare(a[name]);
+				});
+				break;
+
+			default:
+				break;
+		}
+	}
+	console.log('data - new.model.state.filters: ', data);
+
+	model.state.filter.results = data;
+}
+
+//todo обновляем sortState
+function updateSortState(name, sort) {
+	const newSort = {
+		population: 'none', // string - 'up' / 'down' , default = none
+		countryName: 'none', // string - 'up' / 'down' /  , default = none
+		capitalName: 'none', // string - 'up' / 'down' , default = none
+	};
+
+	newSort[name] = sort;
+
+	console.log('newSort: ', newSort);
+
+	model.state.sort = newSort;
+}
+
+function whereSortIsNotNone() {
+	//* клонируем model.state.sort через lodash cloneDeep
+	const cloneStateSort = Object.assign({}, model.state.sort);
+	console.log('cloneStateSort: ', cloneStateSort);
+
+	let name = null;
+	let sort = null;
+
+	//* проходимся по клону , и если значение не равно none - то при присваиваем name и sort
+	for (const [key, value] of Object.entries(cloneStateSort)) {
+		if (value !== 'none') {
+			name = key;
+			sort = value;
+			return;
+		}
+	}
+	console.log('name: ', name);
+	console.log('sort: ', sort);
+
+	const result = [name, sort];
+
+	//* возвращаем name и sort
+	return result;
+}
 //=====================================================
 // блок инициализации
 
