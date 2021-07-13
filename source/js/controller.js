@@ -49,7 +49,7 @@ async function renderAllCountriesCards() {
 		const allCountries = await model.getData();
 		model.state.allCountries = allCountries;
 		model.state.currentData = allCountries;
-		model.state.filter.results = allCountries;
+		// model.state.filter.results = allCountries;
 	}
 	console.log('model.state: ', model.state);
 
@@ -80,7 +80,7 @@ async function renderAllCountriesCards() {
 //todo контроль поиск стран
 async function controlSearchCountries() {
 	try {
-		console.log('model.state: ', model.state);
+		console.log('controlSearchCountries-1 model.state: ', model.state);
 
 		FilterView.btnRemoveClasses();
 
@@ -125,6 +125,8 @@ async function controlSearchCountries() {
 
 		//* 6 - рендерим сообщение
 		CardsView.renderMessage(model.state.search.query);
+
+		console.log('controlSearchCountries-2 model.state: ', model.state);
 	} catch (err) {
 		console.warn(`💣💣💣 ${err.message} ${err.status}`);
 
@@ -140,11 +142,9 @@ async function controlSearchCountries() {
 
 //todo фильтры и сортировка
 async function controlFilterRegion(region) {
-	console.log('controlFilterCountries: ');
+	console.log('controlFilterRegion-1 model.state: ', model.state);
 
-	console.log('region: ', region);
-
-	console.log('model.state: ', model.state);
+	// CardsView.clearCardsHeader();
 
 	//* если не получили регион
 	if (region === 'all') {
@@ -162,7 +162,10 @@ async function controlFilterRegion(region) {
 		} else {
 			await renderAllCountriesCards();
 		} */
-		CardsView.render(model.state.currentData);
+
+		model.state.filter.results.length > 0
+			? CardsView.render(model.state.filter.results)
+			: CardsView.render(model.state.currentData);
 
 		return;
 	}
@@ -172,11 +175,11 @@ async function controlFilterRegion(region) {
 
 	//* 1 - фильтруем данные и добавляем region и data в state
 	const data =
-		model.state.search.results.length > 0
-			? model.state.search.results.filter(
+		model.state.filter.results.length > 0
+			? model.state.filter.results.filter(
 					(country) => country.region === region
 			  )
-			: model.state.allCountries.filter((country) => country.region === region);
+			: model.state.currentData.filter((country) => country.region === region);
 
 	console.log('data: ', data);
 
@@ -199,13 +202,15 @@ async function controlFilterRegion(region) {
 
 	//* 4 - рендерим сообщение если query есть
 	model.state.search.query && CardsView.renderMessage(model.state.search.query);
+
+	console.log('controlFilterRegion-2 model.state: ', model.state);
 }
 
 //todo функция сортировки
 async function controlSort(name, sort) {
 	// model.state.filter.results = model.state.filter.results.sort(a[name] - )
 	console.log({ name, sort });
-	console.log('model.state: ', model.state);
+	console.log('controlSort-1 - model.state: ', model.state);
 
 	switch (sort) {
 		case 'none':
@@ -231,6 +236,38 @@ async function controlSort(name, sort) {
 
 	//* отображаем результат
 	CardsView.render(model.state.filter.results);
+
+	console.log('controlSort-2 - model.state: ', model.state);
+}
+
+//todo функция фильтрации стран по населению
+async function controlFilterPopulation(min, max) {
+	console.log({ min, max });
+	console.log('controlFilterPopulation-1 - model.state:', model.state);
+
+	//* 0 - рендерим спиннер
+	CardsView.renderSpinner();
+
+	//* 1 - меняем данные в state.filter.results
+	const data =
+		model.state.filter.results.length > 0
+			? model.state.filter.results.filter(
+					(country) => country.population >= min && country.population <= max
+			  )
+			: model.state.currentData.filter(
+					(country) => country.population >= min && country.population <= max
+			  );
+
+	model.state.filter.results = data;
+	model.state.filter.byPopulation.min = min;
+	model.state.filter.byPopulation.max = max;
+
+	console.log('controlFilterPopulation - model.state:', model.state);
+
+	//* 2 - рендерим результат
+	CardsView.render(model.state.filter.results);
+
+	console.log('controlFilterPopulation-2 - model.state:', model.state);
 }
 
 //=====================================================
@@ -258,6 +295,9 @@ async function initIndexHTML() {
 
 	//todo отображаем страны по сортировке
 	FilterView.addHandlerSort(controlSort);
+
+	//todo отображаем страны между двумя значениями по населению
+	FilterView.addHandlerFilterPopulation(controlFilterPopulation);
 }
 
 //* начало на странице country

@@ -407,12 +407,24 @@
 		@extend %tpl-filter-content-header;
 	}
 
+	// .filter-third__subtitle
+
+	&__subtitle {
+		font-size: 1.4rem;
+		font-weight: 300;
+		color: var(--text-color);
+
+		margin-bottom: 0.8em;
+	}
+
 	// .filter-third__content
 
 	&__content {
 		display: flex;
 		flex-direction: column;
-		align-items: center;
+		align-items: flex-start;
+
+		margin-top: 1rem;
 	}
 
 	// .filter-third__inputs
@@ -420,36 +432,48 @@
 	&__inputs {
 	}
 
-	// .filter-third__range-ball--first
+	// .filter-third__labels
 
-	&__range-ball--first {
+	&__labels {
+		margin-bottom: 1em;
+
+		label {
+			font-size: 1.4rem;
+			font-weight: 600;
+
+			color: var(--text-color);
+		}
 	}
 
-	// .filter-third__range-ball--second
+	.input-row {
+		display: flex;
+		flex-direction: column;
 
-	&__range-ball--second {
+		& > input:first-of-type {
+			margin-bottom: 0.5em;
+		}
+
+		@include mq(lg) {
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+
+			& > input:first-of-type {
+				margin-bottom: 0 !important;
+				margin-right: 2.5rem;
+			}
+		}
 	}
 
-	// .filter-third__range-line
+	// .filter-third__input
 
-	&__range-line {
-	}
+	&__input {
+		padding: 1em;
 
-	// .filter-third__range-values
+		border-radius: 0.5em;
 
-	&__range-values {
-		color: var(--text-color);
 		font-size: 1.4rem;
-		font-weight: 600;
-	}
-
-	// .filter-third__range-min
-
-	&__range-min {
-	}
-
-	// .filter-third__range-max
-
-	&__range-max {
+		color: var(--input-color);
+		border: 1px solid var(--input-color);
 	}
 }

@@ -24,7 +24,6 @@ class CardsView {
 		}
 		//* присваиваем данные
 		this._data = data;
-		console.log('this._data: ', this._data);
 
 		//* очищаем parentEl
 		this.clear();

@@ -36,7 +36,7 @@
 		></script>
 
 		<!-- <script src="./index.js" type="module" defer></script> -->
-		<script src="./js/controler.js" type="module" defer></script>
+		<script src="./js/controller.js" type="module" defer></script>
 	</head>
 	<body id="index">
 		<header class="header">
@@ -186,20 +186,28 @@
 						<!-- /.content-filter__second-col filter-second -->
 						<div class="content-filter__third-col filter-third">
 							<h3 class="filter-third__title">Filter by Population</h3>
+							<p class="filter-third__subtitle">Population between (in thousand of people)</p>
 							<div class="filter-third__content">
 
 								<div class="filter-third__inputs">
-									<input type="range" class="filter-third__range-ball--first" max="1500000" min="0.5" value="10000">
-									<input type="range" class="filter-third__range-ball--second" max="1500000" min="0.5" value="10000">
-									<input type="range" class="filter-third__range-line" max="1500000" min="0.5" value="10000">
+									<p class="filter-third__labels">
+										<label for="#first-input-num" class="label-num" id="first-label-num">0 k</label> - 
+										<label for="#second-input-num" class="label-num" id="second-label-num">1400000 k</label>
+									</p>
+									<div class="input-row">
+										<input type="text" class="filter-third__input" id="first-input-num"  value="0">
+										<input type="text" class="filter-third__input" id="second-input-num" value="1400000">
+									</div>
 								</div>
 								<!-- /.filter-third__inputs -->
-								<span class="filter-third__range-values">
+
+								<!-- <span class="filter-third__range-values">
 									<span class="filter-third__range-min">1000</span>
 									-
 									<span class="filter-third__range-max">1500000</span>
-									<!-- /.filter-third__range-values -->
-								</span>
+								</span>  -->
+								<!-- /.filter-third__range-values -->
+
 							</div>
 						</div>
 						<!-- /.content-filter__third-col filter-third -->
