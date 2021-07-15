@@ -234,7 +234,7 @@ async function controlSort(name, sort) {
 	console.log('controlSort-1 - model.state: ', model.state);
 
 	//* обновляем state.sort
-	updateSortState(name, sort);
+	await updateSortState(name, sort);
 
 	//* обновляем state.filter.results
 	await updateFilteredResults(model.state.currentData);
@@ -309,6 +309,7 @@ async function controlFilterPopulation(min, max) {
 async function updateFilteredResults(countries) {
 	console.log('update FilterResults - countries: ', countries);
 	//* проверяем где значение не 'none'
+	// const res = await whereSortIsNotNone();
 	const res = await whereSortIsNotNone();
 	const [name, sort] = res;
 
@@ -330,16 +331,16 @@ async function updateFilteredResults(countries) {
 			case 'down':
 				data.sort((a, b) => {
 					return name === 'population'
-						? +a[name] - +b[name]
-						: a[name].localeCompare(b[name]);
+						? +b[name] - +a[name]
+						: b[name].localeCompare(a[name]);
 				});
 				break;
 
 			case 'up':
 				data.sort((a, b) => {
 					return name === 'population'
-						? +b[name] - +a[name]
-						: b[name].localeCompare(a[name]);
+						? +a[name] - +b[name]
+						: a[name].localeCompare(b[name]);
 				});
 				break;
 
@@ -353,7 +354,7 @@ async function updateFilteredResults(countries) {
 }
 
 //todo обновляем sortState
-function updateSortState(name, sort) {
+async function updateSortState(name, sort) {
 	const newSort = {
 		population: 'none', // string - 'up' / 'down' , default = none
 		countryName: 'none', // string - 'up' / 'down' /  , default = none
@@ -380,9 +381,34 @@ function whereSortIsNotNone() {
 		if (value !== 'none') {
 			name = key;
 			sort = value;
-			return;
+			break;
 		}
 	}
+	/* Object.entries(cloneStateSort).forEach(([key, value]) => {
+		console.log('key:value', `${key}:${value}`);
+		if (value !== 'none') {
+			name = key;
+			sort = value;
+			// return;
+		}
+	}); */
+
+	//* проверка
+	/* const obj = {
+		population: 'none',
+		countryName: 'none',
+		capitalName: 'none',
+	};
+
+	Object.entries(obj).forEach(([key, value]) => {
+		console.log('key:value', `${key}:${value}`);
+		if (value !== 'none') {
+			name = key;
+			sort = value;
+			// return;
+		}
+	}); */
+
 	console.log('name: ', name);
 	console.log('sort: ', sort);
 

@@ -35,23 +35,28 @@ class FilterView {
 
 	addHandlerSort(handler) {
 		this._parentEl.addEventListener('click', (e) => {
+			//* проверка есть ли оболочка
 			const wrapper = e.target.closest('.content-second');
 
 			if (!wrapper) return;
 
+			//* проверка есть ли кнопка
 			const btn = e.target.closest('.content-second__btn');
 			console.log('btn: ', btn);
 
 			if (!btn) return;
 
+			//* получаем поле сортировки у кнопки и параметры сортировки
 			const name = btn.dataset.name;
-			const sort = btn.dataset.sort;
+			let sort = btn.dataset.sort;
 
 			console.log('name: ', name);
 			console.log('sort: ', sort);
 
+			//* убираем все активные классы
 			this.btnRemoveClasses();
 
+			//* проверяем какая именно сортировка должна быть и устанавливаем нужные классы и dataset
 			switch (sort) {
 				case 'none':
 					btn.classList.add('active-up');
@@ -70,6 +75,9 @@ class FilterView {
 				default:
 					break;
 			}
+
+			//* обновляем sort
+			sort = btn.dataset.sort;
 
 			handler(name, sort);
 		});
@@ -124,12 +132,14 @@ class FilterView {
 		);
 	}
 
+	//* чтобы числа отображались с пробелами / точками запятыми в соответсвии с locale
 	_formatPopulation(num) {
 		const locale = navigator.language;
 
 		return Intl.NumberFormat(locale).format(num);
 	}
 
+	//* убираем активные классы на все кнопках сортировки
 	btnRemoveClasses() {
 		this._parentEl.querySelectorAll('.content-second__btn').forEach((btn) => {
 			btn.classList.remove('active-down', 'active-up');

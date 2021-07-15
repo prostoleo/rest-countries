@@ -45,7 +45,7 @@ export const state = JSON.parse(localStorage.getItem('countries-state')) ?? {
 		region: 'all', //string
 		byPopulation: {
 			min: 0, // number
-			max: 1400000, // number
+			max: 1400000000, // number
 		},
 	},
 	sort: {

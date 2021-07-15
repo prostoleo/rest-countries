@@ -9,7 +9,9 @@ class SearchView {
 
 	//* слушатель для поиска
 	addHandlerSearch(handler) {
+		//* слушаем событие input на searchbox
 		this._input.addEventListener('input', (e) => {
+			//* получаем запрос
 			const query = e.currentTarget.value.trim();
 			console.log('query: ', query);
 
@@ -17,6 +19,7 @@ class SearchView {
 
 			handler(query);
 
+			//* как только input теряет focus, то обнуляем значение
 			this._input.addEventListener('blur', (e) => {
 				e.currentTarget.value = '';
 			});
@@ -30,7 +33,7 @@ class SearchView {
 		} else {
 			this._clearCardsHeader();
 		} */
-
+		//* возвращаем значение input
 		return this._input.value.trim();
 	}
 }
