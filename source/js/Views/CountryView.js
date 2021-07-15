@@ -10,6 +10,7 @@ class CountryView {
 	//todo рендерим
 	render(data, dataBorders, errMsg = null) {
 		console.log('data: ', data);
+		console.log('dataBorders: ', dataBorders);
 		//* проверка получили ли данные
 		if (data.length === 0) {
 			// this.renderError(this._errorNoCountrySearch);
@@ -108,15 +109,7 @@ class CountryView {
 				<div class="info-country__content-borders borders-content">
 					<h4 class="borders-content__title">Border Countries:</h4>
 					<ul class="borders-content__wrapper">
-						${borders.forEach((border) => {
-							return `
-							<li class="borders-content__item">
-								<a href="./country.html/id=${border.alpha3Code.toLowerCase()}" class="btn borders-content__link" data-country-id="${
-								border.alpha3Code
-							}">${border.name}</a>
-							</li>
-							`;
-						})}					
+						${this.renderBorderCountries(borders)}					
 					</ul>
 				</div>
 				<!-- /.info-country__content-borders borders-content -->
@@ -125,6 +118,20 @@ class CountryView {
 		</div>
 		<!-- /.country__info -->
 		`;
+	}
+
+	renderBorderCountries(borders) {
+		return borders
+			.map((border) => {
+				return `
+					<li class="borders-content__item">
+						<a href="./country.html/id=${border.alpha3Code.toLowerCase()}" class="btn borders-content__link" data-country-id="${
+					border.alpha3Code
+				}">${border.value.name}</a>
+					</li>
+				`;
+			})
+			.join('');
 	}
 
 	renderSpinner() {

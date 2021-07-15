@@ -4,6 +4,7 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime.js';
 // import '../../node_modules/lodash.clonedeep/index';
+// import * as _ from 'lodash';
 
 //* мои импорты
 import * as model from './model.js';
@@ -433,19 +434,20 @@ function controlChooseCountry(id) {
 }
 
 //* обновляем state.country
-function updateStateCountry(id, data = null, dataBorders = null) {
+async function updateStateCountry(id, data = null, dataBorders = null) {
 	const newStateCountry = Object.assign({}, model.state.country);
+	// const newStateCountry = _.cloneDeep({}, model.state.country);
 
 	newStateCountry.id = id;
 	console.log('newStateCountry: ', newStateCountry);
 
 	//* если есть data то обновляем state CountryFull
 	if (data) {
-		newStateCountry.countryHTMLFullInfo = data;
+		newStateCountry.country.countryHTMLFullInfo = data;
 	}
 
 	if (dataBorders) {
-		newStateCountry.borderCountries = dataBorders;
+		newStateCountry.country.borderCountries = dataBorders;
 	}
 
 	model.state.country = newStateCountry;
@@ -455,33 +457,52 @@ function updateStateCountry(id, data = null, dataBorders = null) {
 // блок функций для country html
 async function controlCountryWrapper() {
 	try {
+		console.log('controlCountryWrapper - 1 - model.state: ', model.state);
+
 		//* 0 - рендерим спиннер
 		CountryView.renderSpinner();
 
 		//* меняем url
-		history.pushState(
+		/* history.pushState(
 			null,
 			null,
-			`/id=${model.state.country.id.toLowerCase()}`
-		);
+			`/country.html/id=${model.state.country.id.toLowerCase()}`
+		); */
 
 		//* 1 - получаем данные о стране
+		/* const data = await model.getData(null, model.state.country.id); */
 		const data = await model.getData(
 			null,
 			model.state.country.id.toLowerCase()
 		);
+		console.log('data: ', data);
+
+		model.state.country.countryHTMLFullInfo = data;
+		// await updateStateCountry(model.state.country.id, data);
+
+		console.log(
+			'model.state.country.countryHTMLFullInfo: ',
+			model.state.country.countryHTMLFullInfo
+		);
 
 		//* 2 - получаем данные о соседях
 		const borders = await model.getDataBorders(
-			model.state.countryHTMLFullInfo.borders
+			model.state.country.countryHTMLFullInfo.borders
 		);
+
+		console.log('borders: ', borders);
+
+		console.log('controlCountryWrapper - 2 - model.state: ', model.state);
 
 		/* if (data.length === 0) {
 			throw new Error()
 		} */
 
 		//* 3 обновляем state
-		await updateStateCountry(model.state.country.id, data, borders);
+		// await updateStateCountry(model.state.country.id, data, borders);
+		model.state.country.borderCountries = borders;
+
+		console.log('controlCountryWrapper - 3 - model.state: ', model.state);
 
 		//* 4 рендерим по данным
 		CountryView.render(
@@ -489,6 +510,7 @@ async function controlCountryWrapper() {
 			model.state.country.borderCountries
 		);
 	} catch (error) {
+		console.warn(`${error.message}`);
 		CountryView.renderMessage(
 			`Could not load data of country with code (${model.state.country.id})😞 Try again later`
 		);
@@ -537,6 +559,7 @@ async function initCountryHTML() {
 
 	//todo
 	await controlCountryWrapper();
+	console.log('init country.html - 2');
 }
 
 /* const getData = async (url) => {

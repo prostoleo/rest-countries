@@ -88,13 +88,15 @@ export async function getData(query = null, code = null) {
 		request = fetch(API_URL_ALL);
 
 		//* если есть query то
+		console.log('query: ', query);
 		if (query) {
 			request = fetch(`${API_URL_QUERY}/${query}`);
 		}
 
 		//* если есть code то
+		console.log('code: ', code);
 		if (code) {
-			request = fetch(`${API_URL_CODE}/${code}`);
+			request = fetch(`${API_URL_CODE}/${code.toLowerCase()}`);
 		}
 
 		//* гонка между таймером и запросом
@@ -126,21 +128,32 @@ export async function getDataBorders(borders) {
 		console.log('borders: ', borders);
 		//* формируем запрос на Rest countries для каждой границы
 		const requests = borders.map((border) => {
-			return `${API_URL_CODE}/${border}?fields=alpha3Code;name`;
+			return fetch(`${API_URL_CODE}/${border}?fields=alpha3Code;name`);
 		});
 
 		//* комбинатор all Settled
-		const response = await Promise.allSettled([...requests]);
+		const responses = await Promise.all([...requests]);
 
-		console.log('response: ', response);
+		console.log('responses: ', responses);
 
 		//* кидаем ошибку
-		if (!response.ok)
+		/* if (!response.ok)
 			throw new Error(
 				`Упс! Что-то пошло не так, попробуйте повторить запрос позже (${response.status})`
-			);
+			); */
+		responses.forEach((response) => {
+			if (!response.ok) {
+				throw new Error(
+					`Oops, something went wrong. Try again later (${response.status})`
+				);
+			}
+		});
 
-		const data = await response.json();
+		//* седлать через map или цикл
+		// const data = await response.json();
+		const data = responses.map(async (response) => {
+			return await response.json();
+		});
 		console.log('data: ', data);
 
 		return data;
