@@ -31,6 +31,8 @@
 	// .country__wrapper
 
 	&__wrapper {
+		position: relative;
+
 		@include mq(xlg) {
 			display: flex;
 			align-items: center;
@@ -39,6 +41,44 @@
 			& > *:first-of-type {
 				margin-right: 7%;
 			}
+		}
+	}
+
+	// .country__message
+
+	&__message {
+		font-size: 1.6em;
+		font-weight: 600;
+		margin-bottom: 0.5em;
+		color: var(--text-color);
+	}
+
+	// .country__spinner
+
+	&__spinner {
+		max-width: 100%;
+
+		width: 3.5rem;
+		height: 3.5rem;
+
+		animation: rotation 1.5s linear infinite;
+
+		&-wrapper {
+			@extend %tpl-card-look;
+			position: absolute;
+			top: 0;
+			left: 0;
+			// bottom: 0;
+			right: 0;
+			width: 100%;
+			height: auto;
+			min-height: 150px;
+
+			display: flex;
+			// align-items: center;
+			justify-content: center;
+
+			padding: 7.5% 0;
 		}
 	}
 

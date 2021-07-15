@@ -46,7 +46,9 @@ class CardsView {
           <a href="/country.html" class="cards__link card" data-country-id="${
 						country.alpha3Code
 					}">
-            <img src="${country.flag}" alt="" class="card__img">
+            <img src="${country.flag}" alt="flag of ${
+					country.name
+				}" class="card__img">
             <div class="card__content">
               <h3 class="card__title">${country.name}</h3>
               <p class="card__text">
@@ -109,6 +111,23 @@ class CardsView {
 		const locale = navigator.language;
 
 		return Intl.NumberFormat(locale).format(num);
+	}
+
+	//* выбираем страну которую рендерить
+	addHandlerChooseCountry(handler) {
+		this._parentEl.addEventListener('click', (e) => {
+			//! потом убрать
+			// e.preventDefault();
+
+			const card = e.target.closest('.card');
+
+			if (!card) return;
+
+			const id = card.dataset.countryId;
+			console.log('id: ', id);
+
+			handler(id);
+		});
 	}
 }
 

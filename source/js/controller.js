@@ -417,6 +417,84 @@ function whereSortIsNotNone() {
 	//* возвращаем name и sort
 	return result;
 }
+
+//todo контроль выбора страны для перехода
+function controlChooseCountry(id) {
+	console.log('ChooseCountry - 1) - model.state: ', model.state);
+
+	//* обновляем state.country
+	updateStateCountry(id);
+
+	//* обновляем LS
+	model.updateLS();
+
+	//* проверяем model.state
+	console.log('ChooseCountry - 2) - model.state: ', model.state);
+}
+
+//* обновляем state.country
+function updateStateCountry(id, data = null, dataBorders = null) {
+	const newStateCountry = Object.assign({}, model.state.country);
+
+	newStateCountry.id = id;
+	console.log('newStateCountry: ', newStateCountry);
+
+	//* если есть data то обновляем state CountryFull
+	if (data) {
+		newStateCountry.countryHTMLFullInfo = data;
+	}
+
+	if (dataBorders) {
+		newStateCountry.borderCountries = dataBorders;
+	}
+
+	model.state.country = newStateCountry;
+}
+
+//=====================================================
+// блок функций для country html
+async function controlCountryWrapper() {
+	try {
+		//* 0 - рендерим спиннер
+		CountryView.renderSpinner();
+
+		//* меняем url
+		history.pushState(
+			null,
+			null,
+			`/id=${model.state.country.id.toLowerCase()}`
+		);
+
+		//* 1 - получаем данные о стране
+		const data = await model.getData(
+			null,
+			model.state.country.id.toLowerCase()
+		);
+
+		//* 2 - получаем данные о соседях
+		const borders = await model.getDataBorders(
+			model.state.countryHTMLFullInfo.borders
+		);
+
+		/* if (data.length === 0) {
+			throw new Error()
+		} */
+
+		//* 3 обновляем state
+		await updateStateCountry(model.state.country.id, data, borders);
+
+		//* 4 рендерим по данным
+		CountryView.render(
+			model.state.country.countryHTMLFullInfo,
+			model.state.country.borderCountries
+		);
+	} catch (error) {
+		CountryView.renderMessage(
+			`Could not load data of country with code (${model.state.country.id})😞 Try again later`
+		);
+	}
+}
+
 //=====================================================
 // блок инициализации
 
@@ -445,12 +523,20 @@ async function initIndexHTML() {
 
 	//todo отображаем страны между двумя значениями по населению
 	FilterView.addHandlerFilterPopulation(controlFilterPopulation);
+
+	//todo handle клик на карточки страны
+	CardsView.addHandlerChooseCountry(controlChooseCountry);
 }
 
 //* начало на странице country
-function initCountryHTML() {
+async function initCountryHTML() {
 	console.log('init country.html');
 	switchModeSimple();
+
+	console.log('Country.html - model.state: ', model.state);
+
+	//todo
+	await controlCountryWrapper();
 }
 
 /* const getData = async (url) => {

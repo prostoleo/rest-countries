@@ -1,7 +1,7 @@
 class SearchView {
 	_data;
 	_parentEl = document.querySelector('.left-filter');
-	_input = this._parentEl.querySelector('input');
+	_input = this._parentEl?.querySelector('input');
 
 	constructor() {
 		// console.log('_parentEl: ', this._parentEl);

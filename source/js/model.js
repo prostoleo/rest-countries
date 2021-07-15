@@ -1,7 +1,12 @@
 'use strict';
 
 //todo импорт конфига
-import { API_URL_ALL, API_URL_QUERY, TIMEOUT_SEC } from './config.js';
+import {
+	API_URL_ALL,
+	API_URL_QUERY,
+	API_URL_CODE,
+	TIMEOUT_SEC,
+} from './config.js';
 
 //todo импорт helper
 import { timeout } from './helper.js';
@@ -54,20 +59,78 @@ export const state = JSON.parse(localStorage.getItem('countries-state')) ?? {
 		countryName: 'none', // string - 'up' / 'down' /  , default = none
 		capitalName: 'none', // string - 'up' / 'down' , default = none
 	},
+	country: {
+		id: null, // default - null, country.alpha3Code
+		countryHTMLFullInfo: {}, // full info on country
+		borderCountries: [
+			/* {
+				id: null, // default - null, alpha3Code
+				name: null, // default - null, country.name
+			},  */
+		], // default - [], array of objects
+	},
 };
 
 //=====================================================
 // блок функций вспомогательных
 
-export async function getData(query = null) {
+export async function getData(query = null, code = null) {
 	try {
 		//* формируем запрос на Rest countries , если есть query
-		const request = query
+		/* const request = query
 			? fetch(`${API_URL_QUERY}/${query}`)
-			: fetch(API_URL_ALL);
+			: fetch(API_URL_ALL); */
+
+		//* новый вариант чтобы и с кодом работало
+		let request = null;
+
+		//* по умолчанию request для всех
+		request = fetch(API_URL_ALL);
+
+		//* если есть query то
+		if (query) {
+			request = fetch(`${API_URL_QUERY}/${query}`);
+		}
+
+		//* если есть code то
+		if (code) {
+			request = fetch(`${API_URL_CODE}/${code}`);
+		}
 
 		//* гонка между таймером и запросом
 		const response = await Promise.race([request, timeout(TIMEOUT_SEC)]);
+
+		console.log('response: ', response);
+
+		//* кидаем ошибку
+		if (!response.ok)
+			throw new Error(
+				`Упс! Что-то пошло не так, попробуйте повторить запрос позже (${response.status})`
+			);
+
+		const data = await response.json();
+		console.log('data: ', data);
+
+		return data;
+
+		//* обработка ошибки
+	} catch (err) {
+		// console.error(`💣💣💣 ${err.message}`);
+		throw err;
+	}
+}
+
+//todo получаем данные о соседях
+export async function getDataBorders(borders) {
+	try {
+		console.log('borders: ', borders);
+		//* формируем запрос на Rest countries для каждой границы
+		const requests = borders.map((border) => {
+			return `${API_URL_CODE}/${border}?fields=alpha3Code;name`;
+		});
+
+		//* комбинатор all Settled
+		const response = await Promise.allSettled([...requests]);
 
 		console.log('response: ', response);
 
@@ -96,14 +159,18 @@ export function updateLS() {
 
 //todo получаем параметры поиска
 export function getUrlSearchParams() {
+	//* получаем url
 	const url = window.location.search;
 	console.log('url: ', url);
 
+	//* получаем параметры поиска
 	const params = new URLSearchParams(url);
 	console.log('params: ', params);
 
+	//* создаем объект для параметров
 	const searchParams = {};
 
+	//* добавляем в объект параметры
 	for (const [key, value] of params) {
 		searchParams[key] = value;
 	}
