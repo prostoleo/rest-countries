@@ -2,13 +2,14 @@ class CountryView {
 	_data;
 	_dataBorders;
 	_parentEl = document.querySelector('.country__wrapper');
+	// _bordersWrapper = document.querySelector('.borders-content__wrapper');
 	_messageEl = this._parentEl?.querySelector('.country__message');
 	_errorMessage = 'Could not load data of country😞 Try again later';
 
 	constructor() {}
 
 	//todo рендерим
-	render(data, dataBorders, errMsg = null) {
+	async render(data, dataBorders, errMsg = null) {
 		console.log('data: ', data);
 		console.log('dataBorders: ', dataBorders);
 		//* проверка получили ли данные
@@ -23,9 +24,19 @@ class CountryView {
 		//* очищаем parentEl
 		this.clear();
 
-		const html = this._generateMarkup(this._data, this._dataBorders);
-		// console.log('html: ', html);
+		const html = await this._generateMarkup(this._data, this._dataBorders);
+		console.log('html: ', html);
 
+		/* const htmlBorders = await this.renderBorderCountries(this._dataBorders);
+		console.log('htmlBorders: ', htmlBorders); */
+
+		// await this._parentEl.insertAdjacentHTML('afterbegin', html);
+		/* await this._bordersWrapper.insertAdjacentHTML('afterbegin', htmlBorders); */
+
+		await this.insertMarkUp(html);
+	}
+
+	async insertMarkUp(html) {
 		this._parentEl.insertAdjacentHTML('afterbegin', html);
 	}
 
@@ -37,7 +48,25 @@ class CountryView {
 		this._messageEl.innerHTML = '';
 	}
 
-	_generateMarkup(country, borders) {
+	async _generateMarkup(country, borders) {
+		console.log('borders: ', borders);
+		console.log(borders.map(this._generateMarkupBorder).join(''));
+		console.log(
+			borders
+				.map((border) => {
+					return `
+			<li class="borders-content__item">
+				<a href="./country.html/id=${border.alpha3Code.toLowerCase()}" class="btn borders-content__link" data-country-id="${
+						border.alpha3Code
+					}">
+				${border.name}
+				</a>
+			</li>
+		`;
+				})
+				.join('')
+		);
+
 		return `
 		<div class="country__flag">
 			<img
@@ -109,7 +138,8 @@ class CountryView {
 				<div class="info-country__content-borders borders-content">
 					<h4 class="borders-content__title">Border Countries:</h4>
 					<ul class="borders-content__wrapper">
-						${this.renderBorderCountries(borders)}					
+					${borders.map(this._generateMarkupBorder).join('')}
+					
 					</ul>
 				</div>
 				<!-- /.info-country__content-borders borders-content -->
@@ -120,14 +150,40 @@ class CountryView {
 		`;
 	}
 
-	renderBorderCountries(borders) {
-		return borders
-			.map((border) => {
+	_generateMarkupBorder(border) {
+		// ${borders.map(await this._generateMarkupBorder).join('')}
+
+		console.log('border: ', border);
+		return `
+		<li class="borders-content__item">
+			<a href="./country.html/id=${border.alpha3Code.toLowerCase()}" class="btn borders-content__link" data-country-id="${
+			border.alpha3Code
+		}">
+			${border.name}
+			</a>
+		</li>
+		`;
+
+		/* return `
+		<li class="borders-content__item">
+			<a href="#" class="btn borders-content__link">
+				Belarus
+			</a>
+		</li>
+		`; */
+	}
+
+	async renderBorderCountries(borders) {
+		console.log('borders: ', borders);
+
+		// prettier-ignore
+		borders.map((border) => {
+				console.log('border: ', border);
 				return `
 					<li class="borders-content__item">
 						<a href="./country.html/id=${border.alpha3Code.toLowerCase()}" class="btn borders-content__link" data-country-id="${
 					border.alpha3Code
-				}">${border.value.name}</a>
+				}">${border.name}</a>
 					</li>
 				`;
 			})

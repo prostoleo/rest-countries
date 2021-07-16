@@ -14,6 +14,11 @@ import CountryView from './Views/CountryView.js';
 import SearchView from './Views/SearchView.js';
 import FilterView from './Views/FilterView.js';
 
+//! тест Promise.all
+import * as PromisAllTest from './Promise-all-test.js';
+
+// PromisAllTest.resString();
+
 /* console.log('CardsView: ', CardsView);
 console.log('CountryView: ', CountryView); */
 
@@ -435,7 +440,7 @@ function controlChooseCountry(id) {
 
 //* обновляем state.country
 async function updateStateCountry(id, data = null, dataBorders = null) {
-	const newStateCountry = Object.assign({}, model.state.country);
+	/* const newStateCountry = Object.assign({}, model.state.country);
 	// const newStateCountry = _.cloneDeep({}, model.state.country);
 
 	newStateCountry.id = id;
@@ -450,7 +455,18 @@ async function updateStateCountry(id, data = null, dataBorders = null) {
 		newStateCountry.country.borderCountries = dataBorders;
 	}
 
-	model.state.country = newStateCountry;
+	model.state.country = newStateCountry; */
+	if (id) {
+		model.state.country.id = id;
+	}
+
+	if (data) {
+		model.state.country.countryHTMLFullInfo = data;
+	}
+
+	if (dataBorders) {
+		model.state.country.borderCountries = dataBorders;
+	}
 }
 
 //=====================================================
@@ -485,12 +501,53 @@ async function controlCountryWrapper() {
 			model.state.country.countryHTMLFullInfo
 		);
 
+		let bordersNewData = [];
+
 		//* 2 - получаем данные о соседях
-		const borders = await model.getDataBorders(
+		/* const borders = await model.getDataBorders(
 			model.state.country.countryHTMLFullInfo.borders
 		);
+		console.log('borders: ', borders); */
+		const borders = await model
+			.getDataBorders(model.state.country.countryHTMLFullInfo.borders)
+			.then(async (bordersData) => {
+				bordersData.forEach(async (borderData) => {
+					const newBorderdata = await borderData;
+					bordersNewData.push(newBorderdata);
+				});
 
-		console.log('borders: ', borders);
+				return bordersNewData;
+			})
+			.then((data) => {
+				console.log('data: ', data);
+
+				//* 3 обновляем state
+				// await updateStateCountry(model.state.country.id, data, borders);
+				model.state.country.borderCountries = data;
+
+				return data;
+			})
+			.then(async (data) => {
+				//* 4 рендерим
+				await CountryView.render(
+					model.state.country.countryHTMLFullInfo,
+					model.state.country.borderCountries
+				);
+
+				console.log('controlCountryWrapper - 3 - model.state: ', model.state);
+			});
+
+		// console.log('borders: ', borders);
+		// console.log('bordersNewData: ', bordersNewData);
+
+		/* await borders
+			.forEach(async (border) => {
+				const borderData = await border;
+				bordersData.push(borderData);
+			})
+			.then(() => {
+				console.log('bordersData: ', bordersData);
+			}); */
 
 		console.log('controlCountryWrapper - 2 - model.state: ', model.state);
 
@@ -499,18 +556,18 @@ async function controlCountryWrapper() {
 		} */
 
 		//* 3 обновляем state
-		// await updateStateCountry(model.state.country.id, data, borders);
-		model.state.country.borderCountries = borders;
+		/* await updateStateCountry(model.state.country.id, data, borders); */
+		// model.state.country.borderCountries = await borders;
 
-		console.log('controlCountryWrapper - 3 - model.state: ', model.state);
+		/* console.log('controlCountryWrapper - 3 - model.state: ', model.state); */
 
 		//* 4 рендерим по данным
-		CountryView.render(
+		/* await CountryView.render(
 			model.state.country.countryHTMLFullInfo,
 			model.state.country.borderCountries
-		);
+		); */
 	} catch (error) {
-		console.warn(`${error.message}`);
+		console.warn(`${error}`);
 		CountryView.renderMessage(
 			`Could not load data of country with code (${model.state.country.id})😞 Try again later`
 		);
