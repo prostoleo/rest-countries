@@ -166,13 +166,20 @@ class CountryView {
 		console.log('borders: ', borders);
 
 		// ?id=${border.alpha3Code.toLowerCase()}
+		let url = new URL(window.location.href);
+		console.log('url: ', url);
 
 		// prettier-ignore
 		const str = borders.map((border) => {
+
+			const id = border.alpha3Code.toLowerCase();
+
+			url.searchParams.set('id', id);
+			console.log('url: ', url);
 			// console.log('border: ', border);
 			return `
 			<li class="borders-content__item">
-			<a href="./country.html" class="btn borders-content__link" data-country-id="${
+			<a href="${url}" class="btn borders-content__link" data-country-id="${
 				border.alpha3Code.toLowerCase()
 			}">${border.name}</a>
 			</li>

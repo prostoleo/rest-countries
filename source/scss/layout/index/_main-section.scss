@@ -114,6 +114,10 @@
 		border-top-right-radius: 0.75em;
 
 		border-bottom: 1px solid var(--shadow-color);
+
+		.lazy-load {
+			filter: blur(100px);
+		}
 	}
 
 	// .card__content

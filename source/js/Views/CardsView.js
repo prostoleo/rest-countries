@@ -1,3 +1,5 @@
+import lazyLoadImg from '../lazyLoadImg.js';
+
 class CardsView {
 	_data;
 	_parentEl = document.querySelector('.cards__list');
@@ -32,6 +34,8 @@ class CardsView {
 		// console.log('html: ', html);
 
 		this._parentEl.insertAdjacentHTML('afterbegin', html);
+
+		lazyLoadImg();
 	}
 
 	clear() {
@@ -43,12 +47,10 @@ class CardsView {
 			.map((country) => {
 				return `
         <li class="cards__item">
-          <a href="/country.html" class="cards__link card" data-country-id="${
-						country.alpha3Code
-					}">
-            <img src="${country.flag}" alt="flag of ${
-					country.name
-				}" class="card__img">
+          <a href="/country.html" class="cards__link card" data-country-id="${country.alpha3Code.toLowerCase()}">
+            <img src="./img/image-placeholder.png" alt="flag of ${
+							country.name
+						}" data-src="${country.flag}" class="card__img lazy-load">
             <div class="card__content">
               <h3 class="card__title">${country.name}</h3>
               <p class="card__text">

@@ -14,17 +14,13 @@ import CountryView from './Views/CountryView.js';
 import SearchView from './Views/SearchView.js';
 import FilterView from './Views/FilterView.js';
 
-//! тест Promise.all
-import * as PromisAllTest from './Promise-all-test.js';
-
-// PromisAllTest.resString();
-
 /* console.log('CardsView: ', CardsView);
 console.log('CountryView: ', CountryView); */
 
 import filterToggle from './filter.js';
 import switchModeSimple from './switchModeSimple.js';
 import scrollToTop from './scrollToTop.js';
+// import lazyLoadImg from './lazyLoadImg.js';
 
 //=====================================================
 // блок на какой странице находимся?
@@ -70,6 +66,9 @@ async function renderAllCountriesCards() {
 	history.pushState(null, null, '/');
 
 	CardsView.render(model.state.allCountries);
+
+	//* запускаем lazyload
+	// lazyLoadImg();
 }
 //todo 2 вар - рендерим карточки всех стран
 /* async function renderCountriesCards(all = true) {
@@ -508,7 +507,7 @@ async function controlCountryWrapper() {
 			model.state.country.countryHTMLFullInfo
 		);
 
-		let bordersNewData = [];
+		// let bordersNewData = [];
 
 		//! работает
 
@@ -584,7 +583,7 @@ async function initCountryHTML() {
 	console.log('Country.html - model.state: ', model.state);
 
 	//todo обновляем url
-	// history.pushState(null, null, `/country.html/?id=${model.state.country.id}`);
+	history.pushState(null, null, `/country.html?id=${model.state.country.id}`);
 
 	//todo
 	await controlCountryWrapper();
