@@ -2,6 +2,7 @@ class CountryView {
 	_data;
 	_dataBorders;
 	_parentEl = document.querySelector('.country__wrapper');
+	_btnBack = document.querySelector('.country .btn-back');
 	// _bordersWrapper = document.querySelector('.borders-content__wrapper');
 	_messageEl = this._parentEl?.querySelector('.country__message');
 	_errorMessage = 'Could not load data of country😞 Try again later';
@@ -51,7 +52,7 @@ class CountryView {
 	_generateMarkup(country, borders) {
 		console.log('borders: ', borders);
 
-		const str = this.renderBorderCountries(borders);
+		const str = this.renderBorderCountries(borders) || 'none';
 		console.log('str: ', str);
 
 		const markup = `
@@ -106,7 +107,7 @@ class CountryView {
 					<p class="info-country__text">
 						<span class="info-country__key">Currencies: </span>
 						<span class="info-country__value">${country.currencies[0].name} - ${
-			country.currencies[0].symbol
+			country.currencies[0].symbol ?? '_'
 		} </span>
 					</p>
 					<!-- /.info-country__text -->
@@ -164,12 +165,14 @@ class CountryView {
 	renderBorderCountries(borders) {
 		console.log('borders: ', borders);
 
+		// ?id=${border.alpha3Code.toLowerCase()}
+
 		// prettier-ignore
 		const str = borders.map((border) => {
 			// console.log('border: ', border);
 			return `
 			<li class="borders-content__item">
-			<a href="./country.html/id=${border.alpha3Code.toLowerCase()}" class="btn borders-content__link" data-country-id="${
+			<a href="./country.html" class="btn borders-content__link" data-country-id="${
 				border.alpha3Code.toLowerCase()
 			}">${border.name}</a>
 			</li>
@@ -179,6 +182,19 @@ class CountryView {
 
 		return str;
 	}
+
+	//* для очистки названий стран от скобок
+	/* _clearBorderName(borderName) {
+		// const newBorderName = borderName.replace(/\(*\)/gm);
+		const index1 = borderName.indexOf('(');
+		const index2 = borderName.indexOf(')');
+		const delStr = borderName.slice(index1, index2 + 2);
+
+		const newBorderName = borderName.replace(delStr, '');
+
+		console.log('newBorderName: ', newBorderName);
+		return newBorderName;
+	} */
 
 	renderSpinner() {
 		this.clear();
@@ -211,13 +227,38 @@ class CountryView {
 	}
 
 	clearCardsHeader() {
-		// this._cardsHeader?.innerHTML = '';
+		this._cardsHeader.innerHTML = '';
 	}
 
 	formatPopulation(num) {
 		const locale = navigator.language;
 
 		return Intl.NumberFormat(locale).format(num);
+	}
+
+	addHandlerBtnBack(handler) {
+		this._btnBack.addEventListener('click', (e) => {
+			const btn = e.target.closest('.btn-back');
+
+			if (!btn) return;
+
+			handler();
+		});
+	}
+
+	//todo переход по стране
+	addHandlerToBorderCountry(handler) {
+		this._parentEl.addEventListener('click', (e) => {
+			const link = e.target.closest('.borders-content__link');
+
+			if (!link) return;
+
+			const id = link.dataset.countryId;
+
+			if (!id) return;
+
+			handler(id);
+		});
 	}
 }
 

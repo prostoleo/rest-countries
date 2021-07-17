@@ -24,6 +24,7 @@ console.log('CountryView: ', CountryView); */
 
 import filterToggle from './filter.js';
 import switchModeSimple from './switchModeSimple.js';
+import scrollToTop from './scrollToTop.js';
 
 //=====================================================
 // блок на какой странице находимся?
@@ -535,6 +536,11 @@ async function controlCountryWrapper() {
 	}
 }
 
+//todo контроль кнопки назад
+function controlBtnBack() {
+	history.back();
+}
+
 //=====================================================
 // блок инициализации
 
@@ -543,6 +549,7 @@ async function initIndexHTML() {
 	console.log('init index.html');
 	filterToggle();
 	switchModeSimple();
+	scrollToTop();
 
 	//* 0 - отображаем спиннер
 	CardsView.renderSpinner();
@@ -572,12 +579,22 @@ async function initIndexHTML() {
 async function initCountryHTML() {
 	console.log('init country.html');
 	switchModeSimple();
+	scrollToTop();
 
 	console.log('Country.html - model.state: ', model.state);
+
+	//todo обновляем url
+	// history.pushState(null, null, `/country.html/?id=${model.state.country.id}`);
 
 	//todo
 	await controlCountryWrapper();
 	console.log('init country.html - 2');
+
+	//todo релизовываем кнопку назад
+	CountryView.addHandlerBtnBack(controlBtnBack);
+
+	//todo реализовываем переход по другим странам
+	CountryView.addHandlerToBorderCountry(controlChooseCountry);
 }
 
 /* const getData = async (url) => {

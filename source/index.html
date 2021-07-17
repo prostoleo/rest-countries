@@ -39,7 +39,7 @@
 		<script src="./js/controller.js" type="module" defer></script>
 	</head>
 	<body id="index">
-		<header class="header">
+		<header class="header" id="header">
 			<div class="container">
 				<div class="header__content">
 					<a href="./index.html" class="header__logo">
@@ -258,5 +258,11 @@
 			</div>
 		</main>
 		<!-- /.cards -->
+
+		<div id="arrow-to-header">
+			<a data-to="#header" id="link-to-header">
+				<ion-icon name="arrow-up-outline" id="icon-to-header"></ion-icon>
+			</a>
+		</div>
 	</body>
 </html>
