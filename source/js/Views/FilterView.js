@@ -1,9 +1,11 @@
 class FilterView {
 	_data;
 	_parentEl = document.querySelector('.content-filter');
+	_filterPopulationEls = document.querySelectorAll('.filter-third__input');
 
 	constructor() {
 		// console.log('_parentEl: ', this._parentEl);
+		this.inputFormatPopulation(this._filterPopulationEls);
 	}
 
 	addHandlerFilterRegion(handler) {
@@ -130,6 +132,15 @@ class FilterView {
 				handler(min, max);
 			})
 		);
+	}
+
+	inputFormatPopulation(inputs) {
+		inputs.forEach((input) => {
+			const value = input.value;
+
+			const formattedValue = this._formatPopulation(value);
+			input.value = formattedValue;
+		});
 	}
 
 	//* чтобы числа отображались с пробелами / точками запятыми в соответсвии с locale

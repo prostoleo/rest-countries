@@ -24,7 +24,7 @@ class CountryView {
 		//* очищаем parentEl
 		this.clear();
 
-		const html = await this._generateMarkup(this._data, this._dataBorders);
+		const html = this._generateMarkup(this._data, dataBorders);
 		console.log('html: ', html);
 
 		/* const htmlBorders = await this.renderBorderCountries(this._dataBorders);
@@ -48,26 +48,13 @@ class CountryView {
 		this._messageEl.innerHTML = '';
 	}
 
-	async _generateMarkup(country, borders) {
+	_generateMarkup(country, borders) {
 		console.log('borders: ', borders);
-		console.log(borders.map(this._generateMarkupBorder).join(''));
-		console.log(
-			borders
-				.map((border) => {
-					return `
-			<li class="borders-content__item">
-				<a href="./country.html/id=${border.alpha3Code.toLowerCase()}" class="btn borders-content__link" data-country-id="${
-						border.alpha3Code
-					}">
-				${border.name}
-				</a>
-			</li>
-		`;
-				})
-				.join('')
-		);
 
-		return `
+		const str = this.renderBorderCountries(borders);
+		console.log('str: ', str);
+
+		const markup = `
 		<div class="country__flag">
 			<img
 				src="${country.flag}"
@@ -138,8 +125,7 @@ class CountryView {
 				<div class="info-country__content-borders borders-content">
 					<h4 class="borders-content__title">Border Countries:</h4>
 					<ul class="borders-content__wrapper">
-					${borders.map(this._generateMarkupBorder).join('')}
-					
+						${str}
 					</ul>
 				</div>
 				<!-- /.info-country__content-borders borders-content -->
@@ -148,6 +134,8 @@ class CountryView {
 		</div>
 		<!-- /.country__info -->
 		`;
+
+		return markup;
 	}
 
 	_generateMarkupBorder(border) {
@@ -173,21 +161,23 @@ class CountryView {
 		`; */
 	}
 
-	async renderBorderCountries(borders) {
+	renderBorderCountries(borders) {
 		console.log('borders: ', borders);
 
 		// prettier-ignore
-		borders.map((border) => {
-				console.log('border: ', border);
-				return `
-					<li class="borders-content__item">
-						<a href="./country.html/id=${border.alpha3Code.toLowerCase()}" class="btn borders-content__link" data-country-id="${
-					border.alpha3Code
-				}">${border.name}</a>
-					</li>
-				`;
-			})
-			.join('');
+		const str = borders.map((border) => {
+			// console.log('border: ', border);
+			return `
+			<li class="borders-content__item">
+			<a href="./country.html/id=${border.alpha3Code.toLowerCase()}" class="btn borders-content__link" data-country-id="${
+				border.alpha3Code.toLowerCase()
+			}">${border.name}</a>
+			</li>
+			`;
+		}).join('');
+		console.log('str: ', str);
+
+		return str;
 	}
 
 	renderSpinner() {

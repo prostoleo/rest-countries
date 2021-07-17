@@ -130,9 +130,10 @@ export async function getDataBorders(borders) {
 		const requests = borders.map((border) => {
 			return fetch(`${API_URL_CODE}/${border}?fields=alpha3Code;name`);
 		});
+		console.log('requests: ', requests);
 
 		//* комбинатор all Settled
-		const responses = await Promise.all([...requests]);
+		const responses = await Promise.all(requests);
 
 		console.log('responses: ', responses);
 
@@ -150,11 +151,17 @@ export async function getDataBorders(borders) {
 		});
 
 		//* седлать через map или цикл
-		// const data = await response.json();
-		const data = responses.map(async (response) => {
-			return await response.json();
-		});
-		console.log('data: ', data);
+		/* const data = await response.json();
+		return data; */
+
+		//! работает
+		let data = [];
+
+		for (let i = 0; i < responses.length; i++) {
+			const el = await responses[i].json();
+			data.push(el);
+			console.log('data: ', data);
+		}
 
 		return data;
 

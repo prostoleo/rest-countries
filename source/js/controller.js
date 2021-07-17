@@ -52,12 +52,18 @@ async function renderAllCountriesCards() {
 	console.log('model.state: ', model.state);
 
 	//* если нет всех стран - запрашиваем, иначе рендерим что есть
-	if (model.state.allCountries.length === 0) {
+	/* if (model.state.allCountries.length === 0) {
 		const allCountries = await model.getData();
 		model.state.allCountries = allCountries;
 		model.state.currentData = allCountries;
 		// model.state.filter.results = allCountries;
-	}
+	} else {
+		model.state.currentData = allCountries;
+	} */
+	const allCountries = await model.getData();
+	model.state.allCountries = allCountries;
+	model.state.currentData = allCountries;
+
 	console.log('model.state: ', model.state);
 
 	history.pushState(null, null, '/');
@@ -503,71 +509,26 @@ async function controlCountryWrapper() {
 
 		let bordersNewData = [];
 
+		//! работает
+
 		//* 2 - получаем данные о соседях
-		/* const borders = await model.getDataBorders(
+		const borders = await model.getDataBorders(
 			model.state.country.countryHTMLFullInfo.borders
 		);
-		console.log('borders: ', borders); */
-		const borders = await model
-			.getDataBorders(model.state.country.countryHTMLFullInfo.borders)
-			.then(async (bordersData) => {
-				bordersData.forEach(async (borderData) => {
-					const newBorderdata = await borderData;
-					bordersNewData.push(newBorderdata);
-				});
+		console.log('borders: ', borders);
 
-				return bordersNewData;
-			})
-			.then((data) => {
-				console.log('data: ', data);
+		//* 3 записываем в state
+		model.state.country.borderCountries = borders;
 
-				//* 3 обновляем state
-				// await updateStateCountry(model.state.country.id, data, borders);
-				model.state.country.borderCountries = data;
-
-				return data;
-			})
-			.then(async (data) => {
-				//* 4 рендерим
-				await CountryView.render(
-					model.state.country.countryHTMLFullInfo,
-					model.state.country.borderCountries
-				);
-
-				console.log('controlCountryWrapper - 3 - model.state: ', model.state);
-			});
-
-		// console.log('borders: ', borders);
-		// console.log('bordersNewData: ', bordersNewData);
-
-		/* await borders
-			.forEach(async (border) => {
-				const borderData = await border;
-				bordersData.push(borderData);
-			})
-			.then(() => {
-				console.log('bordersData: ', bordersData);
-			}); */
-
-		console.log('controlCountryWrapper - 2 - model.state: ', model.state);
-
-		/* if (data.length === 0) {
-			throw new Error()
-		} */
-
-		//* 3 обновляем state
-		/* await updateStateCountry(model.state.country.id, data, borders); */
-		// model.state.country.borderCountries = await borders;
-
-		/* console.log('controlCountryWrapper - 3 - model.state: ', model.state); */
-
-		//* 4 рендерим по данным
-		/* await CountryView.render(
+		//* 4 рендерим результат
+		CountryView.render(
 			model.state.country.countryHTMLFullInfo,
 			model.state.country.borderCountries
-		); */
+		);
+
+		console.log('controlCountryWrapper - 2 - model.state: ', model.state);
 	} catch (error) {
-		console.warn(`${error}`);
+		console.error(`${error}`);
 		CountryView.renderMessage(
 			`Could not load data of country with code (${model.state.country.id})😞 Try again later`
 		);
