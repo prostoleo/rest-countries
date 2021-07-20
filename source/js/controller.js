@@ -184,6 +184,10 @@ async function controlFilterRegion(region) {
 		return;
 	} */
 
+	//todo меняем url
+	// history.pushState(null, null, `/?region=${region}`);
+	model.updateURL('filter-region', region);
+
 	//* 0 - рендерим спиннер
 	CardsView.renderSpinner();
 
@@ -245,6 +249,10 @@ async function controlSort(name, sort) {
 	console.log({ name, sort });
 	console.log('controlSort-1 - model.state: ', model.state);
 
+	//todo меняем url
+	// history.pushState(null, null, `?${name}=${sort}`);
+	model.updateURL('sort', [name, sort]);
+
 	//* обновляем state.sort
 	await updateSortState(name, sort);
 
@@ -284,6 +292,11 @@ async function controlSort(name, sort) {
 async function controlFilterPopulation(min, max) {
 	console.log({ min, max });
 	console.log('controlFilterPopulation-1 - model.state:', model.state);
+
+	//todo меняем url
+
+	// history.pushState(null, null, `/?min=${min}&max=${max}`);
+	model.updateURL('filter-population', [min, max]);
 
 	//* 0 - рендерим спиннер
 	CardsView.renderSpinner();
@@ -333,8 +346,11 @@ async function updateFilteredResults(countries) {
 		})
 		.filter((country) => {
 			return (
-				country.population >= model.state.filter.byPopulation.min &&
-				country.population <= model.state.filter.byPopulation.max
+				/* country.population >= model.state.filter.byPopulation.min &&
+				country.population <= model.state.filter.byPopulation.max */
+				//* в тыс. чел.
+				country.population >= model.state.filter.byPopulation.min * 1000 &&
+				country.population <= model.state.filter.byPopulation.max * 1000
 			);
 		});
 
@@ -375,7 +391,7 @@ async function updateSortState(name, sort) {
 
 	newSort[name] = sort;
 
-	console.log('newSort: ', newSort);
+	// console.log('newSort: ', newSort);
 
 	model.state.sort = newSort;
 }
@@ -383,7 +399,7 @@ async function updateSortState(name, sort) {
 function whereSortIsNotNone() {
 	//* клонируем model.state.sort через lodash cloneDeep
 	const cloneStateSort = Object.assign({}, model.state.sort);
-	console.log('cloneStateSort: ', cloneStateSort);
+	// console.log('cloneStateSort: ', cloneStateSort);
 
 	let name = null;
 	let sort = null;
@@ -428,6 +444,11 @@ function whereSortIsNotNone() {
 
 	//* возвращаем name и sort
 	return result;
+}
+
+function loadResultsOnSearchParams() {
+	const curSearchParams = model.getUrlSearchParams();
+	console.log('curSearchParams: ', curSearchParams);
 }
 
 //todo контроль выбора страны для перехода
@@ -490,6 +511,8 @@ async function controlCountryWrapper() {
 			null,
 			`/country.html/id=${model.state.country.id.toLowerCase()}`
 		); */
+		//* меняем url новый
+		model.updateURL('country-id', model.state.country.id.toLowerCase());
 
 		//* 1 - получаем данные о стране
 		/* const data = await model.getData(null, model.state.country.id); */
@@ -515,7 +538,7 @@ async function controlCountryWrapper() {
 		const borders = await model.getDataBorders(
 			model.state.country.countryHTMLFullInfo.borders
 		);
-		console.log('borders: ', borders);
+		// console.log('borders: ', borders);
 
 		//* 3 записываем в state
 		model.state.country.borderCountries = borders;
@@ -545,7 +568,9 @@ function controlBtnBack() {
 
 //* начало на странице index
 async function initIndexHTML() {
-	console.log('init index.html');
+	// console.log('init index.html');
+	loadResultsOnSearchParams();
+
 	filterToggle();
 	switchModeSimple();
 	scrollToTop();
@@ -576,18 +601,20 @@ async function initIndexHTML() {
 
 //* начало на странице country
 async function initCountryHTML() {
-	console.log('init country.html');
+	// console.log('init country.html');
+	loadResultsOnSearchParams();
+
 	switchModeSimple();
 	scrollToTop();
 
 	console.log('Country.html - model.state: ', model.state);
 
 	//todo обновляем url
-	history.pushState(null, null, `/country.html?id=${model.state.country.id}`);
+	// history.pushState(null, null, `/country.html?id=${model.state.country.id}`);
 
 	//todo
 	await controlCountryWrapper();
-	console.log('init country.html - 2');
+	// console.log('init country.html - 2');
 
 	//todo релизовываем кнопку назад
 	CountryView.addHandlerBtnBack(controlBtnBack);

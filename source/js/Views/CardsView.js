@@ -13,12 +13,12 @@ class CardsView {
 	}
 
 	hello() {
-		console.log('CardsView: ');
+		// console.log('CardsView: ');
 	}
 
 	//todo рендерим
 	render(data, errMsg = null) {
-		console.log('data: ', data);
+		// console.log('data: ', data);
 		//* проверка получили ли данные
 		if (data.length === 0) {
 			// this.renderError(this._errorNoCountrySearch);
@@ -126,7 +126,7 @@ class CardsView {
 			if (!card) return;
 
 			const id = card.dataset.countryId;
-			console.log('id: ', id);
+			// console.log('id: ', id);
 
 			handler(id);
 		});

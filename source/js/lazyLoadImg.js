@@ -1,9 +1,9 @@
 export default function () {
 	const imgTargets = document.querySelectorAll('img[data-src]');
-	console.log('imgTargets: ', imgTargets);
+	// console.log('imgTargets: ', imgTargets);
 
 	const loadImageFn = function (entries, observer) {
-		console.log('entries: ', entries);
+		// console.log('entries: ', entries);
 		// const [entry] = entries;
 
 		// console.log('entry: ', entry);

@@ -215,6 +215,8 @@
 	&__wrapper {
 		width: 100%;
 		max-width: 600px;
+
+		color: var(--text-color);
 		// для grid
 		/* display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));

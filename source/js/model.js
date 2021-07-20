@@ -36,7 +36,10 @@ switch (bodyId) {
 // блок state
 
 //todo state
-export const state = JSON.parse(localStorage.getItem('countries-state')) ?? {
+/* export const state = JSON.parse(localStorage.getItem('countries-state')) ?? { */
+export const state = clearState(
+	JSON.parse(localStorage.getItem('countries-state'))
+) ?? {
 	allCountries: [], // Array of objects - all countries
 	currentData: [], // Array of objects - currentData
 	search: {
@@ -71,6 +74,31 @@ export const state = JSON.parse(localStorage.getItem('countries-state')) ?? {
 	},
 };
 
+//todo clearState
+function clearState(state) {
+	//* если state нет
+	if (!state) return null;
+
+	const clearedState = state;
+	console.log('clearedState: ', clearedState);
+
+	//* очищаем ненужные поля
+	clearedState.currentData = [];
+	clearedState.search.query = '';
+	clearedState.search.results = [];
+
+	clearedState.filter.results = [];
+	clearedState.filter.region = 'all';
+	clearedState.filter.byPopulation.min = 0;
+	clearedState.filter.byPopulation.max = 1400000000;
+
+	clearedState.sort.population = 'none';
+	clearedState.sort.countryName = 'none';
+	clearedState.sort.capitalName = 'none';
+
+	return clearedState;
+}
+
 //=====================================================
 // блок функций вспомогательных
 
@@ -102,7 +130,7 @@ export async function getData(query = null, code = null) {
 		//* гонка между таймером и запросом
 		const response = await Promise.race([request, timeout(TIMEOUT_SEC)]);
 
-		console.log('response: ', response);
+		// console.log('response: ', response);
 
 		//* кидаем ошибку
 		if (!response.ok)
@@ -160,7 +188,7 @@ export async function getDataBorders(borders) {
 		for (let i = 0; i < responses.length; i++) {
 			const el = await responses[i].json();
 			data.push(el);
-			console.log('data: ', data);
+			// console.log('data: ', data);
 		}
 
 		return data;
@@ -180,11 +208,11 @@ export function updateLS() {
 //todo получаем параметры поиска
 export function getUrlSearchParams() {
 	//* получаем url
-	const url = window.location.search;
+	const url = new URL(window.location.href);
 	console.log('url: ', url);
 
 	//* получаем параметры поиска
-	const params = new URLSearchParams(url);
+	const params = new URLSearchParams(url.search);
 	console.log('params: ', params);
 
 	//* создаем объект для параметров
@@ -194,8 +222,118 @@ export function getUrlSearchParams() {
 	for (const [key, value] of params) {
 		searchParams[key] = value;
 	}
+	console.log('searchParams: ', searchParams);
 
 	return searchParams;
+}
+
+//todo функция для получения search части url
+export function updateURL(type, setts) {
+	console.log('type: ', type);
+	console.log('setts: ', setts);
+	/* const url = window.location.search;
+	console.log('url: ', url);
+	// console.log('url: ', url);
+
+
+	//* если у url нет параметров поиска
+	if (!url) {
+		switch (type) {
+			//? если тип - фильтрация регионов
+			case 'filter-region':
+				history.pushState(null, null, `?region=${region}`);
+				break;
+			//? если тип - сортировка
+			case 'sort':
+				const [name, sort] = setts;
+
+				history.pushState(null, null, `?${name}=${sort}`);
+				break;
+
+			//? если тип - фильтрация по населению
+			case 'filter-population':
+				const [min, max] = setts;
+
+				history.pushState(null, null, `?min=${min}&max=${max}`);
+				break;
+
+			default:
+				break;
+		}
+
+		return;
+	}
+
+	//* если у url есть параметры поиска
+	if (url) {
+		switch (type) {
+			//? если тип - фильтрация регионов
+			case 'filter-region':
+				history.pushState(null, null, `?region=${region}`);
+				break;
+			//? если тип - сортировка
+			case 'sort':
+				const [name, sort] = params;
+
+				history.pushState(null, null, `?${name}=${sort}`);
+				break;
+
+			//? если тип - фильтрация по населению
+			case 'filter-population':
+				const [min, max] = params;
+
+				history.pushState(null, null, `?min=${min}&max=${max}`);
+				break;
+
+			default:
+				break;
+		}
+
+		return;
+	} */
+
+	let url = new URL(window.location.href);
+	console.log('url: ', url);
+	// console.log('url: ', url);
+
+	let params = new URLSearchParams(url.search);
+	console.log('params-1: ', params);
+
+	//* если у url нет параметров поиска
+	switch (type) {
+		case 'filter-region':
+			const region = setts;
+			params.set('region', region);
+
+			break;
+
+		case 'sort':
+			const [name, sort] = setts;
+			params.set(name, sort);
+			break;
+
+		case 'filter-population':
+			const [min, max] = setts;
+			params.set('min', min);
+			params.set('max', max);
+			break;
+
+		case 'country-id':
+			const id = setts;
+			params.set('id', id);
+			break;
+
+		default:
+			break;
+	}
+	console.log('params-2: ', params);
+
+	const newSearch = params.toString();
+	console.log('newSearch: ', newSearch);
+
+	url.search = newSearch;
+
+	history.replaceState(null, null, url);
 }
 
 /* const bel = await getData('bel');
@@ -220,10 +358,10 @@ console.log('bel: ', bel); */
 
 //* начало на странице index
 function initIndexHTML() {
-	console.log('init index.html');
+	// console.log('init index.html');
 }
 
 //* начало на странице country
 function initCountryHTML() {
-	console.log('init country.html');
+	// console.log('init country.html');
 }

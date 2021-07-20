@@ -26,7 +26,7 @@ class CountryView {
 		this.clear();
 
 		const html = this._generateMarkup(this._data, dataBorders);
-		console.log('html: ', html);
+		// console.log('html: ', html);
 
 		/* const htmlBorders = await this.renderBorderCountries(this._dataBorders);
 		console.log('htmlBorders: ', htmlBorders); */
@@ -50,10 +50,10 @@ class CountryView {
 	}
 
 	_generateMarkup(country, borders) {
-		console.log('borders: ', borders);
+		// console.log('borders: ', borders);
 
 		const str = this.renderBorderCountries(borders) || 'none';
-		console.log('str: ', str);
+		// console.log('str: ', str);
 
 		const markup = `
 		<div class="country__flag">
@@ -167,7 +167,7 @@ class CountryView {
 
 		// ?id=${border.alpha3Code.toLowerCase()}
 		let url = new URL(window.location.href);
-		console.log('url: ', url);
+		// console.log('url: ', url);
 
 		// prettier-ignore
 		const str = borders.map((border) => {
@@ -175,7 +175,7 @@ class CountryView {
 			const id = border.alpha3Code.toLowerCase();
 
 			url.searchParams.set('id', id);
-			console.log('url: ', url);
+			// console.log('url: ', url);
 			// console.log('border: ', border);
 			return `
 			<li class="borders-content__item">
@@ -185,7 +185,7 @@ class CountryView {
 			</li>
 			`;
 		}).join('');
-		console.log('str: ', str);
+		// console.log('str: ', str);
 
 		return str;
 	}

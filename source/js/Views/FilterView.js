@@ -12,11 +12,11 @@ class FilterView {
 		this._parentEl.addEventListener('change', (e) => {
 			//* проверяем кликнули ли в область региона
 			const wrapper = e.target.closest('.radio');
-			console.log('wrapper: ', wrapper);
+			// console.log('wrapper: ', wrapper);
 
 			if (!wrapper) return;
 
-			console.log('e.target.checked: ', e.target.checked);
+			// console.log('e.target.checked: ', e.target.checked);
 
 			//* проверка - если не чекнутый просто вызываем, иначе получаем value
 			/* const status = e.target.checked;
@@ -29,7 +29,7 @@ class FilterView {
 			e.target.checked = !status;
  */
 			const value = e.target.value;
-			console.log('value: ', value);
+			// console.log('value: ', value);
 
 			handler(value);
 		});
@@ -44,7 +44,7 @@ class FilterView {
 
 			//* проверка есть ли кнопка
 			const btn = e.target.closest('.content-second__btn');
-			console.log('btn: ', btn);
+			// console.log('btn: ', btn);
 
 			if (!btn) return;
 
@@ -52,8 +52,8 @@ class FilterView {
 			const name = btn.dataset.name;
 			let sort = btn.dataset.sort;
 
-			console.log('name: ', name);
-			console.log('sort: ', sort);
+			// console.log('name: ', name);
+			// console.log('sort: ', sort);
 
 			//* убираем все активные классы
 			this.btnRemoveClasses();
