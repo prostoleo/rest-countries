@@ -1,4 +1,6 @@
 export default function () {
+	// const imgTargets = document.querySelectorAll('img[data-src]');
+	// if (document.querySelector('html').clientWidth >= 1200) {
 	const imgTargets = document.querySelectorAll('img[data-src]');
 	// console.log('imgTargets: ', imgTargets);
 
@@ -54,4 +56,9 @@ export default function () {
 	imgTargets.forEach((img) => {
 		imgObserver.observe(img);
 	});
+	/* } else {
+		curTargets.forEach((curTarget) =>
+			curTarget.setAttribute('src', curTarget.dataset.src)
+		);
+	} */
 }

@@ -36,8 +36,8 @@ switch (bodyId) {
 // блок state
 
 //todo state
-/* export const state = JSON.parse(localStorage.getItem('countries-state')) ?? { */
-export const state = clearState(
+/* export let state = JSON.parse(localStorage.getItem('countries-state')) ?? { */
+export let state = clearState(
 	JSON.parse(localStorage.getItem('countries-state'))
 ) ?? {
 	allCountries: [], // Array of objects - all countries
@@ -97,6 +97,20 @@ function clearState(state) {
 	clearedState.sort.capitalName = 'none';
 
 	return clearedState;
+}
+
+//todo save prev state
+export function savePrevState() {
+	localStorage.setItem('country-prev-state', JSON.stringify(state));
+}
+
+//todo save prev state
+export function getPrevState() {
+	return JSON.parse(localStorage.getItem('country-prev-state'));
+}
+
+export function setPrevState(prevState) {
+	state = prevState;
 }
 
 //=====================================================
@@ -292,6 +306,8 @@ export function updateURL(type, setts) {
 		return;
 	} */
 
+	const sortKeys = ['population', 'name', 'capital'];
+
 	let url = new URL(window.location.href);
 	console.log('url: ', url);
 	// console.log('url: ', url);
@@ -310,6 +326,12 @@ export function updateURL(type, setts) {
 		case 'sort':
 			const [name, sort] = setts;
 			params.set(name, sort);
+
+			//* очищаем другие сортировки
+			sortKeys.forEach((sortKey) => {
+				if (sortKey !== name) params.delete(sortKey);
+			});
+
 			break;
 
 		case 'filter-population':
@@ -328,12 +350,17 @@ export function updateURL(type, setts) {
 	}
 	console.log('params-2: ', params);
 
+	//* новые поисковые параметры
 	const newSearch = params.toString();
 	console.log('newSearch: ', newSearch);
 
+	//* вставляем в url
 	url.search = newSearch;
 
-	history.replaceState(null, null, url);
+	//* меняем url на новый
+	// history.replaceState(null, null, url);
+	// history.pushState(state, null, url);
+	history.replaceState(state, null, url);
 }
 
 /* const bel = await getData('bel');

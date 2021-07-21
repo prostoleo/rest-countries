@@ -91,7 +91,7 @@ async function renderAllCountriesCards() {
 } */
 
 //todo контроль поиск стран
-async function controlSearchCountries() {
+async function controlSearchCountries(query = null) {
 	try {
 		console.log('controlSearchCountries-1 model.state: ', model.state);
 
@@ -101,7 +101,7 @@ async function controlSearchCountries() {
 		CardsView.renderSpinner();
 
 		//* 1 - получаем запрос
-		const query = SearchView.getQuery();
+		// const query = SearchView.getQuery();
 
 		//* 2 - добавляем запрос в state
 		model.state.search.query = query;
@@ -119,7 +119,7 @@ async function controlSearchCountries() {
 
 		//* 3 формируем запрос
 		const data = await model.getData(query);
-		console.log('data: ', data);
+		// console.log('data: ', data);
 
 		//* 3a - если данных нет - выводим ошибку
 		if (data.length === 0)
@@ -246,7 +246,7 @@ async function controlFilterRegion(region) {
 //todo функция сортировки
 async function controlSort(name, sort) {
 	// model.state.filter.results = model.state.filter.results.sort(a[name] - )
-	console.log({ name, sort });
+	// console.log({ name, sort });
 	console.log('controlSort-1 - model.state: ', model.state);
 
 	//todo меняем url
@@ -290,7 +290,7 @@ async function controlSort(name, sort) {
 
 //todo функция фильтрации стран по населению
 async function controlFilterPopulation(min, max) {
-	console.log({ min, max });
+	// console.log({ min, max });
 	console.log('controlFilterPopulation-1 - model.state:', model.state);
 
 	//todo меняем url
@@ -437,8 +437,8 @@ function whereSortIsNotNone() {
 		}
 	}); */
 
-	console.log('name: ', name);
-	console.log('sort: ', sort);
+	// console.log('name: ', name);
+	// console.log('sort: ', sort);
 
 	const result = [name, sort];
 
@@ -446,14 +446,61 @@ function whereSortIsNotNone() {
 	return result;
 }
 
-function loadResultsOnSearchParams() {
+//todo загружаем необходимые данные в соответствии с SearchParams
+async function loadResultsOnSearchParams() {
 	const curSearchParams = model.getUrlSearchParams();
 	console.log('curSearchParams: ', curSearchParams);
+
+	//* проходимся по объекту с параметрами
+	for (const [key, value] of curSearchParams) {
+		if (value !== '' && value !== null && value !== undefined) {
+			switch (key) {
+				// если есть поиск - вызываем поиск
+				case 'search':
+					controlSearchCountries(value);
+
+					break;
+				// если есть region - вызываем регион
+				case 'region':
+					controlFilterRegion(value);
+					break;
+				// если есть population / name / capital - вызываем sort
+				case 'population':
+				case 'name':
+				case 'capital':
+					controlSort(key, value);
+					break;
+
+				// если есть min / max
+				case 'min':
+					const maxValue = curSearchParams.max;
+
+					controlFilterPopulation(value, maxValue);
+					break;
+				// если есть min / max
+				case 'max':
+					const minValue = curSearchParams.min;
+
+					controlFilterPopulation(minValue, value);
+					break;
+				case 'id':
+					updateStateCountry(id);
+					await controlCountryWrapper();
+					break;
+
+				default:
+					break;
+			}
+		}
+	}
 }
 
 //todo контроль выбора страны для перехода
 function controlChooseCountry(id) {
 	console.log('ChooseCountry - 1) - model.state: ', model.state);
+
+	//* сохраняем предыдущий state в LS
+	model.savePrevState();
 
 	//* обновляем state.country
 	updateStateCountry(id);
@@ -520,7 +567,7 @@ async function controlCountryWrapper() {
 			null,
 			model.state.country.id.toLowerCase()
 		);
-		console.log('data: ', data);
+		// console.log('data: ', data);
 
 		model.state.country.countryHTMLFullInfo = data;
 		// await updateStateCountry(model.state.country.id, data);
@@ -559,8 +606,29 @@ async function controlCountryWrapper() {
 }
 
 //todo контроль кнопки назад
-function controlBtnBack() {
-	history.back();
+async function controlBtnBack() {
+	// const prevState = localStorage.getItem('country-prev-state')
+
+	const prevState = model.getPrevState();
+	console.log('prevState: ', prevState);
+
+	model.setPrevState(prevState);
+
+	console.log('model.state: ', model.state);
+
+	controlChooseCountry(model.state.country.id);
+	window.history.back();
+
+	// model.state = prevState;
+	/* let url = new URL(window.location.href);
+	console.log('url: ', url);
+
+	await window.history.back();
+
+	console.log('url: ', url); */
+
+	// history.updateState(model.getPrevState());
+	// window.history.go(-1);
 }
 
 //=====================================================
@@ -569,7 +637,7 @@ function controlBtnBack() {
 //* начало на странице index
 async function initIndexHTML() {
 	// console.log('init index.html');
-	loadResultsOnSearchParams();
+	// loadResultsOnSearchParams();
 
 	filterToggle();
 	switchModeSimple();
@@ -602,7 +670,7 @@ async function initIndexHTML() {
 //* начало на странице country
 async function initCountryHTML() {
 	// console.log('init country.html');
-	loadResultsOnSearchParams();
+	// loadResultsOnSearchParams();
 
 	switchModeSimple();
 	scrollToTop();
