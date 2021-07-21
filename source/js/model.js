@@ -64,6 +64,7 @@ export let state = clearState(
 	},
 	country: {
 		id: null, // default - null, country.alpha3Code
+
 		countryHTMLFullInfo: {}, // full info on country
 		borderCountries: [
 			/* {
@@ -72,6 +73,7 @@ export let state = clearState(
 			},  */
 		], // default - [], array of objects
 	},
+	prevId: null, // default - null, country.alpha3Code
 };
 
 //todo clearState
@@ -100,8 +102,8 @@ function clearState(state) {
 }
 
 //todo save prev state
-export function savePrevState() {
-	localStorage.setItem('country-prev-state', JSON.stringify(state));
+/* export function savePrevState(receivedState) {
+	localStorage.setItem('country-prev-state', JSON.stringify(receivedState));
 }
 
 //todo save prev state
@@ -110,8 +112,34 @@ export function getPrevState() {
 }
 
 export function setPrevState(prevState) {
+	savePrevState(state);
+
 	state = prevState;
+} */
+//! убрал для того чтобы кнопка back просто перемезала на index.html
+//todo save prev state
+/* export function savePrevState(receivedState, id) {
+	console.log('savePrevState - receivedState - 1): ', receivedState);
+	receivedState.prevId = state.prevId;
+	console.log('savePrevState - receivedState - 2): ', receivedState);
+
+	console.log('foo - savePrevState - id: ', id);
+	localStorage.setItem(
+		`country-prev-state${id ? id : ''}`,
+		JSON.stringify(receivedState)
+	);
 }
+
+//todo save prev state
+export function getPrevState(id) {
+	return JSON.parse(localStorage.getItem(`country-prev-state${id ? id : ''}`));
+}
+
+export function setPrevState(prevState) {
+	// savePrevState(state);
+
+	state = prevState;
+} */
 
 //=====================================================
 // блок функций вспомогательных
@@ -215,8 +243,8 @@ export async function getDataBorders(borders) {
 }
 
 //todo обновляем localStorage
-export function updateLS() {
-	localStorage.setItem('countries-state', JSON.stringify(state));
+export function updateLS(receivedState) {
+	localStorage.setItem('countries-state', JSON.stringify(receivedState));
 }
 
 //todo получаем параметры поиска

@@ -496,17 +496,25 @@ async function loadResultsOnSearchParams() {
 }
 
 //todo контроль выбора страны для перехода
-function controlChooseCountry(id) {
+function controlChooseCountry(id, border = false, back = false) {
 	console.log('ChooseCountry - 1) - model.state: ', model.state);
 
+	//! убрал для того чтобы кнопка back просто перемезала на index.html
+	//* если border true то сохраняем предыдущий id
+	// if (border) model.state.prevId = model.state.country.id;
+
 	//* сохраняем предыдущий state в LS
-	model.savePrevState();
+	/* model.state.prevId
+		? model.savePrevState(model.state, model.state.prevId)
+		: model.savePrevState(model.state); */
+
+	// model.savePrevState(model.state);
 
 	//* обновляем state.country
 	updateStateCountry(id);
 
 	//* обновляем LS
-	model.updateLS();
+	model.updateLS(model.state);
 
 	//* проверяем model.state
 	console.log('ChooseCountry - 2) - model.state: ', model.state);
@@ -609,14 +617,20 @@ async function controlCountryWrapper() {
 async function controlBtnBack() {
 	// const prevState = localStorage.getItem('country-prev-state')
 
-	const prevState = model.getPrevState();
+	//* получаем пред state
+	const prevState = model.getPrevState(model.state.prevId);
 	console.log('prevState: ', prevState);
 
+	//* присваиваем предыдущий state
 	model.setPrevState(prevState);
 
 	console.log('model.state: ', model.state);
 
-	controlChooseCountry(model.state.country.id);
+	controlChooseCountry(model.state.prevId);
+	/* model.state.prevId
+		? controlChooseCountry(model.state.prevId)
+		: controlChooseCountry(model.state.country.id); */
+
 	window.history.back();
 
 	// model.state = prevState;
@@ -685,7 +699,7 @@ async function initCountryHTML() {
 	// console.log('init country.html - 2');
 
 	//todo релизовываем кнопку назад
-	CountryView.addHandlerBtnBack(controlBtnBack);
+	// CountryView.addHandlerBtnBack(controlBtnBack);
 
 	//todo реализовываем переход по другим странам
 	CountryView.addHandlerToBorderCountry(controlChooseCountry);

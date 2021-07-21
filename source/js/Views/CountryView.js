@@ -264,7 +264,7 @@ class CountryView {
 
 			if (!id) return;
 
-			handler(id);
+			handler(id, true);
 		});
 	}
 }
