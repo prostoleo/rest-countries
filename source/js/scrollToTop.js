@@ -1,6 +1,5 @@
 export default function () {
 	const links = document.querySelectorAll('a[data-to]');
-	// console.log('links: ', links);
 
 	links.forEach(controlScrollTo);
 

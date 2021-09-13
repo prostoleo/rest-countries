@@ -11,14 +11,11 @@ import {
 //todo импорт helper
 import { timeout } from './helper.js';
 
-// console.log('model');
-
 //=====================================================
 // блок на какой странице находимся?
 
 //* проверяем , на какой странице находимся
 const bodyId = document.querySelector('body').id;
-// console.log('bodyId: ', bodyId);
 
 switch (bodyId) {
 	case 'index':
@@ -36,7 +33,6 @@ switch (bodyId) {
 // блок state
 
 //todo state
-/* export let state = JSON.parse(localStorage.getItem('countries-state')) ?? { */
 export let state = clearState(
 	JSON.parse(localStorage.getItem('countries-state'))
 ) ?? {
@@ -82,7 +78,6 @@ function clearState(state) {
 	if (!state) return null;
 
 	const clearedState = state;
-	console.log('clearedState: ', clearedState);
 
 	//* очищаем ненужные поля
 	clearedState.currentData = [];
@@ -101,56 +96,11 @@ function clearState(state) {
 	return clearedState;
 }
 
-//todo save prev state
-/* export function savePrevState(receivedState) {
-	localStorage.setItem('country-prev-state', JSON.stringify(receivedState));
-}
-
-//todo save prev state
-export function getPrevState() {
-	return JSON.parse(localStorage.getItem('country-prev-state'));
-}
-
-export function setPrevState(prevState) {
-	savePrevState(state);
-
-	state = prevState;
-} */
-//! убрал для того чтобы кнопка back просто перемезала на index.html
-//todo save prev state
-/* export function savePrevState(receivedState, id) {
-	console.log('savePrevState - receivedState - 1): ', receivedState);
-	receivedState.prevId = state.prevId;
-	console.log('savePrevState - receivedState - 2): ', receivedState);
-
-	console.log('foo - savePrevState - id: ', id);
-	localStorage.setItem(
-		`country-prev-state${id ? id : ''}`,
-		JSON.stringify(receivedState)
-	);
-}
-
-//todo save prev state
-export function getPrevState(id) {
-	return JSON.parse(localStorage.getItem(`country-prev-state${id ? id : ''}`));
-}
-
-export function setPrevState(prevState) {
-	// savePrevState(state);
-
-	state = prevState;
-} */
-
 //=====================================================
 // блок функций вспомогательных
 
 export async function getData(query = null, code = null) {
 	try {
-		//* формируем запрос на Rest countries , если есть query
-		/* const request = query
-			? fetch(`${API_URL_QUERY}/${query}`)
-			: fetch(API_URL_ALL); */
-
 		//* новый вариант чтобы и с кодом работало
 		let request = null;
 
@@ -158,21 +108,17 @@ export async function getData(query = null, code = null) {
 		request = fetch(API_URL_ALL);
 
 		//* если есть query то
-		console.log('query: ', query);
 		if (query) {
 			request = fetch(`${API_URL_QUERY}/${query}`);
 		}
 
 		//* если есть code то
-		console.log('code: ', code);
 		if (code) {
 			request = fetch(`${API_URL_CODE}/${code.toLowerCase()}`);
 		}
 
 		//* гонка между таймером и запросом
 		const response = await Promise.race([request, timeout(TIMEOUT_SEC)]);
-
-		// console.log('response: ', response);
 
 		//* кидаем ошибку
 		if (!response.ok)
@@ -181,13 +127,11 @@ export async function getData(query = null, code = null) {
 			);
 
 		const data = await response.json();
-		console.log('data: ', data);
 
 		return data;
 
 		//* обработка ошибки
 	} catch (err) {
-		// console.error(`💣💣💣 ${err.message}`);
 		throw err;
 	}
 }
@@ -195,17 +139,13 @@ export async function getData(query = null, code = null) {
 //todo получаем данные о соседях
 export async function getDataBorders(borders) {
 	try {
-		console.log('borders: ', borders);
 		//* формируем запрос на Rest countries для каждой границы
 		const requests = borders.map((border) => {
 			return fetch(`${API_URL_CODE}/${border}?fields=alpha3Code;name`);
 		});
-		console.log('requests: ', requests);
 
 		//* комбинатор all Settled
 		const responses = await Promise.all(requests);
-
-		console.log('responses: ', responses);
 
 		//* кидаем ошибку
 		/* if (!response.ok)
@@ -230,7 +170,6 @@ export async function getDataBorders(borders) {
 		for (let i = 0; i < responses.length; i++) {
 			const el = await responses[i].json();
 			data.push(el);
-			// console.log('data: ', data);
 		}
 
 		return data;
@@ -251,11 +190,9 @@ export function updateLS(receivedState) {
 export function getUrlSearchParams() {
 	//* получаем url
 	const url = new URL(window.location.href);
-	console.log('url: ', url);
 
 	//* получаем параметры поиска
 	const params = new URLSearchParams(url.search);
-	console.log('params: ', params);
 
 	//* создаем объект для параметров
 	const searchParams = {};
@@ -264,84 +201,17 @@ export function getUrlSearchParams() {
 	for (const [key, value] of params) {
 		searchParams[key] = value;
 	}
-	console.log('searchParams: ', searchParams);
 
 	return searchParams;
 }
 
 //todo функция для получения search части url
 export function updateURL(type, setts) {
-	console.log('type: ', type);
-	console.log('setts: ', setts);
-	/* const url = window.location.search;
-	console.log('url: ', url);
-	// console.log('url: ', url);
-
-
-	//* если у url нет параметров поиска
-	if (!url) {
-		switch (type) {
-			//? если тип - фильтрация регионов
-			case 'filter-region':
-				history.pushState(null, null, `?region=${region}`);
-				break;
-			//? если тип - сортировка
-			case 'sort':
-				const [name, sort] = setts;
-
-				history.pushState(null, null, `?${name}=${sort}`);
-				break;
-
-			//? если тип - фильтрация по населению
-			case 'filter-population':
-				const [min, max] = setts;
-
-				history.pushState(null, null, `?min=${min}&max=${max}`);
-				break;
-
-			default:
-				break;
-		}
-
-		return;
-	}
-
-	//* если у url есть параметры поиска
-	if (url) {
-		switch (type) {
-			//? если тип - фильтрация регионов
-			case 'filter-region':
-				history.pushState(null, null, `?region=${region}`);
-				break;
-			//? если тип - сортировка
-			case 'sort':
-				const [name, sort] = params;
-
-				history.pushState(null, null, `?${name}=${sort}`);
-				break;
-
-			//? если тип - фильтрация по населению
-			case 'filter-population':
-				const [min, max] = params;
-
-				history.pushState(null, null, `?min=${min}&max=${max}`);
-				break;
-
-			default:
-				break;
-		}
-
-		return;
-	} */
-
 	const sortKeys = ['population', 'name', 'capital'];
 
 	let url = new URL(window.location.href);
-	console.log('url: ', url);
-	// console.log('url: ', url);
 
 	let params = new URLSearchParams(url.search);
-	console.log('params-1: ', params);
 
 	//* если у url нет параметров поиска
 	switch (type) {
@@ -376,40 +246,16 @@ export function updateURL(type, setts) {
 		default:
 			break;
 	}
-	console.log('params-2: ', params);
 
 	//* новые поисковые параметры
 	const newSearch = params.toString();
-	console.log('newSearch: ', newSearch);
 
 	//* вставляем в url
 	url.search = newSearch;
 
 	//* меняем url на новый
-	// history.replaceState(null, null, url);
-	// history.pushState(state, null, url);
 	history.replaceState(state, null, url);
 }
-
-/* const bel = await getData('bel');
-console.log('bel: ', bel); */
-
-//=====================================================
-// блок функций
-
-/* export async function searchCountriesOnQuery(query) {
-	//todo получаем данные по поисковому запросу
-	const data = await getData(query.toLowerCase());
-	console.log('data: ', data);
-
-	//* обновляем state
-	state.search.query = query;
-	state.search.results = data;
-	console.log('state.search: ', state.search);
-} */
-
-//=====================================================
-// блок инициализации
 
 //* начало на странице index
 function initIndexHTML() {

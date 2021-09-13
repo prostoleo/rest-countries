@@ -3,7 +3,6 @@ export default function () {
 
 	//* кнопка меню
 	const toggleFilterBtn = document.querySelector('.right-filter__header');
-	// console.log('toggleFilterBtn: ', toggleFilterBtn);
 
 	//* переменная флаг
 	let filterIsOpen = false;
@@ -23,13 +22,11 @@ export default function () {
 		} else {
 			clipPathRes = 'border-box circle(150% at 100% 0%)';
 		}
-		// console.log('clipPathRes: ', clipPathRes);
 	});
 
 	//* timeline GSAP
 	const tlFilter = gsap.timeline();
 
-	// console.log('clipPathRes: ', clipPathRes);
 	tlFilter
 		.to('.right-filter__icon', {
 			duration: 0.15,

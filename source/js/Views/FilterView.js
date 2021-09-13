@@ -4,7 +4,6 @@ class FilterView {
 	_filterPopulationEls = document.querySelectorAll('.filter-third__input');
 
 	constructor() {
-		// console.log('_parentEl: ', this._parentEl);
 		this.inputFormatPopulation(this._filterPopulationEls);
 	}
 
@@ -12,24 +11,10 @@ class FilterView {
 		this._parentEl.addEventListener('change', (e) => {
 			//* проверяем кликнули ли в область региона
 			const wrapper = e.target.closest('.radio');
-			// console.log('wrapper: ', wrapper);
 
 			if (!wrapper) return;
 
-			// console.log('e.target.checked: ', e.target.checked);
-
-			//* проверка - если не чекнутый просто вызываем, иначе получаем value
-			/* const status = e.target.checked;
-			const inputs = wrapper.querySelectorAll('input');
-
-			inputs.forEach((input) => {
-				input.checked = false;
-			});
-
-			e.target.checked = !status;
- */
 			const value = e.target.value;
-			// console.log('value: ', value);
 
 			handler(value);
 		});
@@ -44,16 +29,12 @@ class FilterView {
 
 			//* проверка есть ли кнопка
 			const btn = e.target.closest('.content-second__btn');
-			// console.log('btn: ', btn);
 
 			if (!btn) return;
 
 			//* получаем поле сортировки у кнопки и параметры сортировки
 			const name = btn.dataset.name;
 			let sort = btn.dataset.sort;
-
-			// console.log('name: ', name);
-			// console.log('sort: ', sort);
 
 			//* убираем все активные классы
 			this.btnRemoveClasses();
@@ -88,17 +69,13 @@ class FilterView {
 	addHandlerFilterPopulation(handler) {
 		this._parentEl.querySelectorAll('.filter-third__input').forEach((input) =>
 			input.addEventListener('input', (e) => {
-				// console.log('e: ', e);
-
 				//* проверяем есть ли обертка
 				const wrapper = e.target.closest('.filter-third__content');
-				// console.log('wrapper: ', wrapper);
 
 				if (!wrapper) return;
 
 				//* проверяем есть ли input
 				const input = e.target.closest('.filter-third__input');
-				// console.log('input: ', input);
 
 				if (!input) return;
 
@@ -106,12 +83,10 @@ class FilterView {
 				const values = [];
 
 				const inputs = wrapper.querySelectorAll('.filter-third__input');
-				// console.log('inputs: ', inputs);
 
 				inputs.forEach((input, i, arr) => {
 					values.push(+input.value);
 				});
-				// console.log('values: ', values);
 
 				//* сортируем массив
 				values.sort((a, b) => +a - +b);
@@ -122,13 +97,10 @@ class FilterView {
 				//* получаем label
 				const labels = wrapper.querySelectorAll('.label-num');
 
-				// labels[0].textContent = `${this._formatPopulation(min)} k`;
-				// labels[1].textContent = `${this._formatPopulation(max)} k`;
 				labels[0].textContent = `${this._formatPopulation(min)}`;
 				labels[1].textContent = `${this._formatPopulation(max)}`;
 
 				//* вызываем функцию и отображаем в чел, а не в тыс. чел
-				// handler(min * 1000, max * 1000);
 				handler(min, max);
 			})
 		);

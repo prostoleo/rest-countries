@@ -3,9 +3,7 @@ class SearchView {
 	_parentEl = document.querySelector('.left-filter');
 	_input = this._parentEl?.querySelector('input');
 
-	constructor() {
-		// console.log('_parentEl: ', this._parentEl);
-	}
+	constructor() {}
 
 	//* слушатель для поиска
 	addHandlerSearch(handler) {
@@ -13,7 +11,6 @@ class SearchView {
 		this._input.addEventListener('input', (e) => {
 			//* получаем запрос
 			const query = e.currentTarget.value.trim();
-			console.log('query: ', query);
 
 			if (!query) return;
 

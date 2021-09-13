@@ -9,25 +9,19 @@ import 'regenerator-runtime/runtime.js';
 //* мои импорты
 import * as model from './model.js';
 import CardsView from './Views/CardsView.js';
-// console.log('CardsView: ', CardsView);
 import CountryView from './Views/CountryView.js';
 import SearchView from './Views/SearchView.js';
 import FilterView from './Views/FilterView.js';
 
-/* console.log('CardsView: ', CardsView);
-console.log('CountryView: ', CountryView); */
-
 import filterToggle from './filter.js';
 import switchModeSimple from './switchModeSimple.js';
 import scrollToTop from './scrollToTop.js';
-// import lazyLoadImg from './lazyLoadImg.js';
 
 //=====================================================
 // блок на какой странице находимся?
 
 //* проверяем , на какой странице находимся
 const bodyId = document.querySelector('body').id;
-// console.log('bodyId: ', bodyId);
 
 switch (bodyId) {
 	case 'index':
@@ -46,55 +40,18 @@ switch (bodyId) {
 
 //todo рендерим карточки всех стран
 async function renderAllCountriesCards() {
-	console.log('model.state: ', model.state);
-
-	//* если нет всех стран - запрашиваем, иначе рендерим что есть
-	/* if (model.state.allCountries.length === 0) {
-		const allCountries = await model.getData();
-		model.state.allCountries = allCountries;
-		model.state.currentData = allCountries;
-		// model.state.filter.results = allCountries;
-	} else {
-		model.state.currentData = allCountries;
-	} */
 	const allCountries = await model.getData();
 	model.state.allCountries = allCountries;
 	model.state.currentData = allCountries;
 
-	console.log('model.state: ', model.state);
-
 	history.pushState(null, null, '/');
 
 	CardsView.render(model.state.allCountries);
-
-	//* запускаем lazyload
-	// lazyLoadImg();
 }
-//todo 2 вар - рендерим карточки всех стран
-/* async function renderCountriesCards(all = true) {
-	if (all) {
-		const allCountries = await model.getData();
-		model.state.allCountries = allCountries;
-		console.log('model.state: ', model.state);
-
-		CardsView.render(model.state.allCountries);
-	} else {
-		CardsView.render(model.state.search.results);
-	}
-} */
-
-//todo рендерим карточки стран по поиску
-/* async function renderCountriesCards() {
-	// CardsView.renderSpinner();
-	SearchView.addHandlerSearch(model.searchCountriesOnQuery);
-	CardsView.render(model.state.search.results);
-} */
 
 //todo контроль поиск стран
 async function controlSearchCountries(query = null) {
 	try {
-		console.log('controlSearchCountries-1 model.state: ', model.state);
-
 		FilterView.btnRemoveClasses();
 
 		//* 0 - рендерим спиннер
@@ -109,9 +66,6 @@ async function controlSearchCountries(query = null) {
 		//* 2a - если нет query (пустая строка) - чистим заголовок
 		if (!query) {
 			CardsView.clearCardsHeader();
-
-			/* CardsView.render(model.state.allCountries);
-			return; */
 		}
 
 		//* 2б - меняем url
@@ -119,7 +73,6 @@ async function controlSearchCountries(query = null) {
 
 		//* 3 формируем запрос
 		const data = await model.getData(query);
-		// console.log('data: ', data);
 
 		//* 3a - если данных нет - выводим ошибку
 		if (data.length === 0)
@@ -138,8 +91,6 @@ async function controlSearchCountries(query = null) {
 
 		//* 6 - рендерим сообщение
 		CardsView.renderMessage(model.state.search.query);
-
-		console.log('controlSearchCountries-2 model.state: ', model.state);
 	} catch (err) {
 		console.warn(`💣💣💣 ${err.message} ${err.status}`);
 
@@ -155,8 +106,6 @@ async function controlSearchCountries(query = null) {
 
 //todo фильтры и сортировка
 async function controlFilterRegion(region) {
-	console.log('controlFilterRegion-1 model.state: ', model.state);
-
 	// CardsView.clearCardsHeader();
 
 	//* если не получили регион
@@ -193,19 +142,6 @@ async function controlFilterRegion(region) {
 
 	//* 1 - фильтруем данные и добавляем region и data в state
 
-	//* старый вариант
-	/* const data =
-		model.state.filter.results.length > 0
-			? model.state.filter.results.filter(
-					(country) => country.region === region
-			  )
-			: model.state.currentData.filter((country) => country.region === region);
-
-	console.log('data: ', data); */
-
-	/* model.state.filter.region = region;
-	model.state.filter.results = data; */
-
 	//* новый вариант
 	model.state.filter.region = region;
 
@@ -213,16 +149,6 @@ async function controlFilterRegion(region) {
 	await updateFilteredResults(model.state.currentData);
 
 	//* 2 - если нет по фильтру, то рендерим ошибку
-	//* старый вариант
-	/* if (data.length === 0) {
-		CardsView.renderError(
-			`Sorry, no country was found on filter input <span>${model.state.filter.region}</span>😞 Try other filters!`
-		);
-
-		CardsView.clear();
-
-		return;
-	} */
 	//* новый вариант
 	if (model.state.filter.results.length === 0) {
 		CardsView.renderError(
@@ -239,18 +165,11 @@ async function controlFilterRegion(region) {
 
 	//* 4 - рендерим сообщение если query есть
 	model.state.search.query && CardsView.renderMessage(model.state.search.query);
-
-	console.log('controlFilterRegion-2 model.state: ', model.state);
 }
 
 //todo функция сортировки
 async function controlSort(name, sort) {
-	// model.state.filter.results = model.state.filter.results.sort(a[name] - )
-	// console.log({ name, sort });
-	console.log('controlSort-1 - model.state: ', model.state);
-
 	//todo меняем url
-	// history.pushState(null, null, `?${name}=${sort}`);
 	model.updateURL('sort', [name, sort]);
 
 	//* обновляем state.sort
@@ -259,43 +178,13 @@ async function controlSort(name, sort) {
 	//* обновляем state.filter.results
 	await updateFilteredResults(model.state.currentData);
 
-	//* старый вариант
-	/* 	switch (sort) {
-		case 'none':
-		case 'down':
-			model.state.filter.results.sort((a, b) => {
-				return name === 'population'
-					? +a[name] - +b[name]
-					: a[name].localeCompare(b[name]);
-			});
-			break;
-
-		case 'up':
-			model.state.filter.results.sort((a, b) => {
-				return name === 'population'
-					? +b[name] - +a[name]
-					: b[name].localeCompare(a[name]);
-			});
-			break;
-
-		default:
-			break;
-	} */
-
 	//* отображаем результат
 	CardsView.render(model.state.filter.results);
-
-	console.log('controlSort-2 - model.state: ', model.state);
 }
 
 //todo функция фильтрации стран по населению
 async function controlFilterPopulation(min, max) {
-	// console.log({ min, max });
-	console.log('controlFilterPopulation-1 - model.state:', model.state);
-
 	//todo меняем url
-
-	// history.pushState(null, null, `/?min=${min}&max=${max}`);
 	model.updateURL('filter-population', [min, max]);
 
 	//* 0 - рендерим спиннер
@@ -306,35 +195,17 @@ async function controlFilterPopulation(min, max) {
 	model.state.filter.byPopulation.max = max;
 
 	//* 1 - меняем данные в state.filter.results
-	/* const data =
-		model.state.filter.results.length > 0
-			? model.state.filter.results.filter(
-					(country) => country.population >= min && country.population <= max
-			  )
-			: model.state.currentData.filter(
-					(country) => country.population >= min && country.population <= max
-			  ); */
 
 	//* новый вариант
 	await updateFilteredResults(model.state.currentData);
 
-	//* старый вариант
-	// model.state.filter.results = data;
-
-	/* model.state.filter.byPopulation.min = min;
-	model.state.filter.byPopulation.max = max; */
-
 	//* 2 - рендерим результат
 	CardsView.render(model.state.filter.results);
-
-	console.log('controlFilterPopulation-2 - model.state:', model.state);
 }
 
 //todo обновляем filtereResults
 async function updateFilteredResults(countries) {
-	console.log('update FilterResults - countries: ', countries);
 	//* проверяем где значение не 'none'
-	// const res = await whereSortIsNotNone();
 	const res = await whereSortIsNotNone();
 	const [name, sort] = res;
 
@@ -346,8 +217,6 @@ async function updateFilteredResults(countries) {
 		})
 		.filter((country) => {
 			return (
-				/* country.population >= model.state.filter.byPopulation.min &&
-				country.population <= model.state.filter.byPopulation.max */
 				//* в тыс. чел.
 				country.population >= model.state.filter.byPopulation.min * 1000 &&
 				country.population <= model.state.filter.byPopulation.max * 1000
@@ -376,7 +245,6 @@ async function updateFilteredResults(countries) {
 				break;
 		}
 	}
-	console.log('data - new.model.state.filters: ', data);
 
 	model.state.filter.results = data;
 }
@@ -391,15 +259,12 @@ async function updateSortState(name, sort) {
 
 	newSort[name] = sort;
 
-	// console.log('newSort: ', newSort);
-
 	model.state.sort = newSort;
 }
 
 function whereSortIsNotNone() {
 	//* клонируем model.state.sort через lodash cloneDeep
 	const cloneStateSort = Object.assign({}, model.state.sort);
-	// console.log('cloneStateSort: ', cloneStateSort);
 
 	let name = null;
 	let sort = null;
@@ -412,33 +277,6 @@ function whereSortIsNotNone() {
 			break;
 		}
 	}
-	/* Object.entries(cloneStateSort).forEach(([key, value]) => {
-		console.log('key:value', `${key}:${value}`);
-		if (value !== 'none') {
-			name = key;
-			sort = value;
-			// return;
-		}
-	}); */
-
-	//* проверка
-	/* const obj = {
-		population: 'none',
-		countryName: 'none',
-		capitalName: 'none',
-	};
-
-	Object.entries(obj).forEach(([key, value]) => {
-		console.log('key:value', `${key}:${value}`);
-		if (value !== 'none') {
-			name = key;
-			sort = value;
-			// return;
-		}
-	}); */
-
-	// console.log('name: ', name);
-	// console.log('sort: ', sort);
 
 	const result = [name, sort];
 
@@ -449,7 +287,6 @@ function whereSortIsNotNone() {
 //todo загружаем необходимые данные в соответствии с SearchParams
 async function loadResultsOnSearchParams() {
 	const curSearchParams = model.getUrlSearchParams();
-	console.log('curSearchParams: ', curSearchParams);
 
 	//* проходимся по объекту с параметрами
 	for (const [key, value] of curSearchParams) {
@@ -497,8 +334,6 @@ async function loadResultsOnSearchParams() {
 
 //todo контроль выбора страны для перехода
 function controlChooseCountry(id, border = false, back = false) {
-	console.log('ChooseCountry - 1) - model.state: ', model.state);
-
 	//! убрал для того чтобы кнопка back просто перемезала на index.html
 	//* если border true то сохраняем предыдущий id
 	// if (border) model.state.prevId = model.state.country.id;
@@ -517,27 +352,10 @@ function controlChooseCountry(id, border = false, back = false) {
 	model.updateLS(model.state);
 
 	//* проверяем model.state
-	console.log('ChooseCountry - 2) - model.state: ', model.state);
 }
 
 //* обновляем state.country
 async function updateStateCountry(id, data = null, dataBorders = null) {
-	/* const newStateCountry = Object.assign({}, model.state.country);
-	// const newStateCountry = _.cloneDeep({}, model.state.country);
-
-	newStateCountry.id = id;
-	console.log('newStateCountry: ', newStateCountry);
-
-	//* если есть data то обновляем state CountryFull
-	if (data) {
-		newStateCountry.country.countryHTMLFullInfo = data;
-	}
-
-	if (dataBorders) {
-		newStateCountry.country.borderCountries = dataBorders;
-	}
-
-	model.state.country = newStateCountry; */
 	if (id) {
 		model.state.country.id = id;
 	}
@@ -555,8 +373,6 @@ async function updateStateCountry(id, data = null, dataBorders = null) {
 // блок функций для country html
 async function controlCountryWrapper() {
 	try {
-		console.log('controlCountryWrapper - 1 - model.state: ', model.state);
-
 		//* 0 - рендерим спиннер
 		CountryView.renderSpinner();
 
@@ -575,15 +391,9 @@ async function controlCountryWrapper() {
 			null,
 			model.state.country.id.toLowerCase()
 		);
-		// console.log('data: ', data);
 
 		model.state.country.countryHTMLFullInfo = data;
 		// await updateStateCountry(model.state.country.id, data);
-
-		console.log(
-			'model.state.country.countryHTMLFullInfo: ',
-			model.state.country.countryHTMLFullInfo
-		);
 
 		// let bordersNewData = [];
 
@@ -593,7 +403,6 @@ async function controlCountryWrapper() {
 		const borders = await model.getDataBorders(
 			model.state.country.countryHTMLFullInfo.borders
 		);
-		// console.log('borders: ', borders);
 
 		//* 3 записываем в state
 		model.state.country.borderCountries = borders;
@@ -603,8 +412,6 @@ async function controlCountryWrapper() {
 			model.state.country.countryHTMLFullInfo,
 			model.state.country.borderCountries
 		);
-
-		console.log('controlCountryWrapper - 2 - model.state: ', model.state);
 	} catch (error) {
 		console.error(`${error}`);
 		CountryView.renderMessage(
@@ -619,30 +426,13 @@ async function controlBtnBack() {
 
 	//* получаем пред state
 	const prevState = model.getPrevState(model.state.prevId);
-	console.log('prevState: ', prevState);
 
 	//* присваиваем предыдущий state
 	model.setPrevState(prevState);
 
-	console.log('model.state: ', model.state);
-
 	controlChooseCountry(model.state.prevId);
-	/* model.state.prevId
-		? controlChooseCountry(model.state.prevId)
-		: controlChooseCountry(model.state.country.id); */
 
 	window.history.back();
-
-	// model.state = prevState;
-	/* let url = new URL(window.location.href);
-	console.log('url: ', url);
-
-	await window.history.back();
-
-	console.log('url: ', url); */
-
-	// history.updateState(model.getPrevState());
-	// window.history.go(-1);
 }
 
 //=====================================================
@@ -650,9 +440,6 @@ async function controlBtnBack() {
 
 //* начало на странице index
 async function initIndexHTML() {
-	// console.log('init index.html');
-	// loadResultsOnSearchParams();
-
 	filterToggle();
 	switchModeSimple();
 	scrollToTop();
@@ -662,10 +449,8 @@ async function initIndexHTML() {
 
 	//* 1 - начальные данные - все страны
 	await renderAllCountriesCards();
-	// await renderCountriesCards();
 
 	//todo отображаем страны по поиску
-	// renderCountriesCards();
 	SearchView.addHandlerSearch(controlSearchCountries);
 
 	//todo отображаем страны по фильтрам региона
@@ -683,36 +468,12 @@ async function initIndexHTML() {
 
 //* начало на странице country
 async function initCountryHTML() {
-	// console.log('init country.html');
-	// loadResultsOnSearchParams();
-
 	switchModeSimple();
 	scrollToTop();
 
-	console.log('Country.html - model.state: ', model.state);
-
-	//todo обновляем url
-	// history.pushState(null, null, `/country.html?id=${model.state.country.id}`);
-
 	//todo
 	await controlCountryWrapper();
-	// console.log('init country.html - 2');
-
-	//todo релизовываем кнопку назад
-	// CountryView.addHandlerBtnBack(controlBtnBack);
 
 	//todo реализовываем переход по другим странам
 	CountryView.addHandlerToBorderCountry(controlChooseCountry);
 }
-
-/* const getData = async (url) => {
-	const response = await fetch(url);
-	console.log('response: ', response);
-
-	const data = await response.json();
-	console.log('data: ', data);
-
-	return data;
-};
-
-getData('https://restcountries.eu/rest/v2/all'); */

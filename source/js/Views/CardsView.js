@@ -8,20 +8,12 @@ class CardsView {
 	_errorNoCountrySearch =
 		'Sorry, no country was found 😞 Try search for something else!';
 
-	constructor() {
-		// console.log('_parentEl: ', this._parentEl);
-	}
-
-	hello() {
-		// console.log('CardsView: ');
-	}
+	constructor() {}
 
 	//todo рендерим
 	render(data, errMsg = null) {
-		// console.log('data: ', data);
 		//* проверка получили ли данные
 		if (data.length === 0) {
-			// this.renderError(this._errorNoCountrySearch);
 			return;
 		}
 		//* присваиваем данные
@@ -31,7 +23,6 @@ class CardsView {
 		this.clear();
 
 		const html = this._generateMarkup(this._data);
-		// console.log('html: ', html);
 
 		this._parentEl.insertAdjacentHTML('afterbegin', html);
 
@@ -126,7 +117,6 @@ class CardsView {
 			if (!card) return;
 
 			const id = card.dataset.countryId;
-			// console.log('id: ', id);
 
 			handler(id);
 		});

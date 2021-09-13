@@ -11,8 +11,6 @@ class CountryView {
 
 	//todo рендерим
 	async render(data, dataBorders, errMsg = null) {
-		console.log('data: ', data);
-		console.log('dataBorders: ', dataBorders);
 		//* проверка получили ли данные
 		if (data.length === 0) {
 			// this.renderError(this._errorNoCountrySearch);
@@ -26,13 +24,6 @@ class CountryView {
 		this.clear();
 
 		const html = this._generateMarkup(this._data, dataBorders);
-		// console.log('html: ', html);
-
-		/* const htmlBorders = await this.renderBorderCountries(this._dataBorders);
-		console.log('htmlBorders: ', htmlBorders); */
-
-		// await this._parentEl.insertAdjacentHTML('afterbegin', html);
-		/* await this._bordersWrapper.insertAdjacentHTML('afterbegin', htmlBorders); */
 
 		await this.insertMarkUp(html);
 	}
@@ -50,10 +41,7 @@ class CountryView {
 	}
 
 	_generateMarkup(country, borders) {
-		// console.log('borders: ', borders);
-
 		const str = this.renderBorderCountries(borders) || 'none';
-		// console.log('str: ', str);
 
 		const markup = `
 		<div class="country__flag">
@@ -140,9 +128,6 @@ class CountryView {
 	}
 
 	_generateMarkupBorder(border) {
-		// ${borders.map(await this._generateMarkupBorder).join('')}
-
-		console.log('border: ', border);
 		return `
 		<li class="borders-content__item">
 			<a href="./country.html/id=${border.alpha3Code.toLowerCase()}" class="btn borders-content__link" data-country-id="${
@@ -152,22 +137,11 @@ class CountryView {
 			</a>
 		</li>
 		`;
-
-		/* return `
-		<li class="borders-content__item">
-			<a href="#" class="btn borders-content__link">
-				Belarus
-			</a>
-		</li>
-		`; */
 	}
 
 	renderBorderCountries(borders) {
-		console.log('borders: ', borders);
-
 		// ?id=${border.alpha3Code.toLowerCase()}
 		let url = new URL(window.location.href);
-		// console.log('url: ', url);
 
 		// prettier-ignore
 		const str = borders.map((border) => {
@@ -175,8 +149,6 @@ class CountryView {
 			const id = border.alpha3Code.toLowerCase();
 
 			url.searchParams.set('id', id);
-			// console.log('url: ', url);
-			// console.log('border: ', border);
 			return `
 			<li class="borders-content__item">
 			<a href="${url}" class="btn borders-content__link" data-country-id="${
@@ -185,23 +157,9 @@ class CountryView {
 			</li>
 			`;
 		}).join('');
-		// console.log('str: ', str);
 
 		return str;
 	}
-
-	//* для очистки названий стран от скобок
-	/* _clearBorderName(borderName) {
-		// const newBorderName = borderName.replace(/\(*\)/gm);
-		const index1 = borderName.indexOf('(');
-		const index2 = borderName.indexOf(')');
-		const delStr = borderName.slice(index1, index2 + 2);
-
-		const newBorderName = borderName.replace(delStr, '');
-
-		console.log('newBorderName: ', newBorderName);
-		return newBorderName;
-	} */
 
 	renderSpinner() {
 		this.clear();
